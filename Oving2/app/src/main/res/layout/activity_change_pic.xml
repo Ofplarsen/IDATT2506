@@ -25,5 +25,25 @@
             android:layout_marginStart="55dp" android:layout_marginEnd="55dp"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="1.0" app:srcCompat="@drawable/lukas"/>
+    <Button
+            android:text="Finish"
+            android:onClick="onClickFinishActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/button2"
+            android:layout_marginEnd="160dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="158dp"
+            android:layout_marginTop="55dp" app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="253dp"
+            app:layout_constraintHorizontal_bias="0.6" app:layout_constraintVertical_bias="1.0"/>
+    <Button
+            android:text="Change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/button3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:onClick="onClickChangePic"
+            android:layout_marginBottom="189dp" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/button2" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="157dp" android:layout_marginEnd="158dp"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

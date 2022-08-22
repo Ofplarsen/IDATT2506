@@ -14,4 +14,5 @@ class MainActivity : Activity() {
     fun onClickStartChangePicActivity(v: View?) {
         val intent = Intent("oving2.ChangePicActivity")
         startActivity(intent) }
+
 }
