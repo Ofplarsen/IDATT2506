@@ -19,7 +19,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="edu.ntnu.oflarsen.idatt2506.oving2.ChangePicActivity" android:label="@string/title_activity"> </activity>
+        <activity
+                android:name="edu.ntnu.oflarsen.idatt2506.oving2.ChangePicActivity"
+                android:label="@string/title_activity" android:exported="true">
+            <intent-filter>
+                <action
+                        android:name="oving2.ChangePicActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
