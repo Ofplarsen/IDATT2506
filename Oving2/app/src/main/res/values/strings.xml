@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Oving2</string>
+    <string name="title_activity">BildeAktivitet</string>
 </resources>
