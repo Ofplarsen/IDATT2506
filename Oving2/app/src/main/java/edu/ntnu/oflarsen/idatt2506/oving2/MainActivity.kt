@@ -23,6 +23,11 @@ class MainActivity : Activity() {
         startActivityForResult(intent, numbRequestCode)
     }
 
+    fun onClickStartCalc(v: View?) {
+        val intent = Intent("oflarsen.idatt2506.Calculator")
+        startActivityForResult(intent, numbRequestCode)
+    }
+
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         if (resultCode != RESULT_OK) {
             Log.e("onActivityResult()", "Something went wrong")
