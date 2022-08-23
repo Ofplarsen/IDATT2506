@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 
 class ChangePicActivity : Activity() {
     private var flagValue = R.drawable.lukas;
@@ -20,6 +21,7 @@ class ChangePicActivity : Activity() {
 
     fun onClickFinishActivity(v: View?) {
         setResult(RESULT_OK, Intent().putExtra("flag", flagValue))
+        Toast.makeText(this, R.string.app_name, Toast.LENGTH_LONG).show()
         finish()
     }
 
@@ -27,5 +29,6 @@ class ChangePicActivity : Activity() {
         val currentImageIsUK: Boolean = flagValue == R.drawable.lukas
         flagValue = if (currentImageIsUK) R.drawable.steffen else R.drawable.lukas
         (findViewById<View>(R.id.imageView) as ImageView).setImageResource(flagValue)
+        Toast.makeText(this, "Toast test", Toast.LENGTH_LONG).show()
     }
 }
