@@ -1,6 +1,8 @@
 package edu.ntnu.oflarsen.idatt2506.oving2
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -29,6 +31,23 @@ class ChangePicActivity : Activity() {
         val currentImageIsUK: Boolean = flagValue == R.drawable.lukas
         flagValue = if (currentImageIsUK) R.drawable.steffen else R.drawable.lukas
         (findViewById<View>(R.id.imageView) as ImageView).setImageResource(flagValue)
-        Toast.makeText(this, "Toast test", Toast.LENGTH_LONG).show()
+        alert()
+    }
+
+    fun alert(){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Alert")
+        builder.setMessage("Description")
+        builder.setPositiveButton("Confirm") { dialog: DialogInterface, which:
+            Int ->
+                Toast.makeText(applicationContext, "Confirm", Toast.LENGTH_SHORT).show()
+        }
+        builder.setNegativeButton("Cancel") { _,_ ->
+            Toast.makeText(applicationContext, "Cancel", Toast.LENGTH_SHORT).show()
+        }
+        builder.setNeutralButton("Neutral") { _,_ ->
+            Toast.makeText(applicationContext, "Neutral", Toast.LENGTH_SHORT).show()
+        }
+        builder.show()
     }
 }
