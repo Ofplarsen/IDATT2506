@@ -20,7 +20,7 @@ class MainActivity : Activity() {
     fun onClickStartApp(v: View?) {
         val intent = Intent("oflarsen.idatt2506.GenerateNumberActivity")
         intent.putExtra("upperLimit", upperLimit)
-        startActivityForResult(intent, value)
+        startActivityForResult(intent, numbRequestCode)
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
@@ -29,8 +29,8 @@ class MainActivity : Activity() {
             return
         }
 
-        if (requestCode == numbRequestCode) {
-            value = data.getIntExtra("numberValue", value)
+        if(requestCode == numbRequestCode){
+            val value = data.getIntExtra("numberValue", value)
             val numberValue = findViewById<View>(R.id.numbValue) as TextView
             numberValue.text = value.toString()
         }

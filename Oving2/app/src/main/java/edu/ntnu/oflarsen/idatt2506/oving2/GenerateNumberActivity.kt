@@ -28,8 +28,7 @@ class GenerateNumberActivity : Activity() {
     fun generateRandomNumber(view: View?){
         randomNumber = (0..upperLimit).random()
 
-        setResult(RESULT_OK, Intent().putExtra("numberValue", randomNumber))
-        finish()
+        onClickFinishActivity(view)
     }
 
 }
