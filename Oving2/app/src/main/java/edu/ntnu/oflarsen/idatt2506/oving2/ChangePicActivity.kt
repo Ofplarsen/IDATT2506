@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 
 class ChangePicActivity : Activity() {
     private var flagValue = R.drawable.lukas;
@@ -24,6 +26,7 @@ class ChangePicActivity : Activity() {
     fun onClickFinishActivity(v: View?) {
         setResult(RESULT_OK, Intent().putExtra("flag", flagValue))
         Toast.makeText(this, R.string.app_name, Toast.LENGTH_LONG).show()
+        notification()
         finish()
     }
 
@@ -49,5 +52,17 @@ class ChangePicActivity : Activity() {
             Toast.makeText(applicationContext, "Neutral", Toast.LENGTH_SHORT).show()
         }
         builder.show()
+    }
+
+    fun notification(){
+        var builder = NotificationCompat.Builder(this, "1")
+            .setSmallIcon(R.drawable.stein)
+            .setContentTitle("Title")
+            .setContentText("Content")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        with(NotificationManagerCompat.from(this)) {
+            // notificationId is a unique int for each notification that you must define
+            notify(1, builder.build())
+        }
     }
 }
