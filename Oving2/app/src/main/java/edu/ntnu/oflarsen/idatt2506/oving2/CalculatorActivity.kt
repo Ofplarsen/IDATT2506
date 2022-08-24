@@ -20,7 +20,7 @@ class CalculatorActivity : Activity() {
      */
     fun onClickFinishActivity(v: View?) {
 
-        setResult(RESULT_OK, Intent().putExtra("numberValue", 12))
+        setResult(RESULT_OK, Intent().putExtra("numberValue", 2))
         finish()
     }
 }

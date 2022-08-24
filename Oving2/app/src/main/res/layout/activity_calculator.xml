@@ -62,6 +62,13 @@
             android:text="@string/multiply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/button2"
-            android:layout_marginEnd="164dp" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="206dp"/>
+            android:layout_marginEnd="172dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="204dp"/>
+    <Button
+            android:text="Return"
+            android:layout_width="wrap_content"
+            android:onClick="onClickFinishActivity"
+            android:layout_height="wrap_content" android:id="@+id/button3"
+            android:layout_marginEnd="174dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="77dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

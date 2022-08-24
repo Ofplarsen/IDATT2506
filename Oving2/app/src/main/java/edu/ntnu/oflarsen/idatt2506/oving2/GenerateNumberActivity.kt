@@ -27,7 +27,7 @@ class GenerateNumberActivity : Activity() {
 
     fun generateRandomNumber(view: View?){
         randomNumber = (0..upperLimit).random()
-
+        Toast.makeText(this, randomNumber.toString(), Toast.LENGTH_LONG).show()
         onClickFinishActivity(view)
     }
 
