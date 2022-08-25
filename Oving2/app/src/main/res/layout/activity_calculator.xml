@@ -5,19 +5,19 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".CalculatorActivity">
     <TextView
             android:text="3"
             android:layout_width="wrap_content"
             android:textSize="24dp"
-            android:layout_height="wrap_content" android:id="@+id/textView2"
+            android:layout_height="wrap_content" android:id="@+id/n1"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="128dp"
             app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="100dp"/>
     <TextView
             android:text="5"
             android:layout_width="wrap_content"
             android:textSize="24dp"
-            android:layout_height="wrap_content" android:id="@+id/textView3"
+            android:layout_height="wrap_content" android:id="@+id/n2"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="100dp" android:layout_marginEnd="136dp"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -26,9 +26,9 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editTextNumber"
+            android:id="@+id/upperLimitInput"
             android:minHeight="48dp" android:layout_marginTop="38dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" android:layout_marginEnd="31dp"
+            app:layout_constraintTop_toBottomOf="@+id/n2" android:layout_marginEnd="31dp"
             app:layout_constraintEnd_toEndOf="parent" android:autofillHints="10"
             tools:ignore="SpeakableTextPresentCheck"/>
     <EditText
@@ -36,9 +36,9 @@
             android:layout_height="48dp"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editTextNumber2"
+            android:id="@+id/answerInput"
             android:layout_marginEnd="32dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="25dp"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNumber" android:autofillHints="8"
+            app:layout_constraintTop_toBottomOf="@+id/upperLimitInput" android:autofillHints="8"
             tools:ignore="SpeakableTextPresentCheck"/>
     <TextView
             android:text="@string/answer"
@@ -54,6 +54,7 @@
             app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="190dp"/>
     <Button
             android:text="@string/add"
+            android:onClick="onClickAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/button"
             android:layout_marginEnd="174dp" app:layout_constraintEnd_toEndOf="parent"
@@ -61,6 +62,7 @@
     <Button
             android:text="@string/multiply"
             android:layout_width="wrap_content"
+            android:onClick="onClickMultiply"
             android:layout_height="wrap_content" android:id="@+id/button2"
             android:layout_marginEnd="172dp" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="204dp"/>

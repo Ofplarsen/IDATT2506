@@ -5,5 +5,5 @@
     <string name="answer">Answer:</string>
     <string name="upper_limit">Upper limit:</string>
     <string name="correct">Correct!</string>
-    <string name="wrong">Wrong. Correct answer is</string>
+    <string name="wrong">Wrong. Correct answer is </string>
 </resources>
