@@ -1,3 +1,37 @@
 <resources>
-    <string name="app_name">Oving3</string>
+    <string name="app_name">EksempelApp</string>
+    <string name="movie1">Inception</string>
+    <string name="movie_rating1">8.8</string>
+    <string name="movie2">Godfather</string>
+    <string name="movie_rating2">9.2</string>
+    <string name="movie3">The Dark Knight</string>
+    <string name="movie_rating3">9.0</string>
+    <string name="movie4">12 Angry Men</string>
+    <string name="movie_rating4">8.9</string>
+    <string name="movie5">Pulp Fiction</string>
+    <string name="movie_rating5">88</string>
+    <string name="avslutt">Quit</string>
+    <string name="bildebeskrivelse">Description</string>
+    <string-array name="movies">
+        <item>@string/movie1</item>
+        <item>@string/movie2</item>
+        <item>@string/movie3</item>
+        <item>@string/movie4</item>
+        <item>@string/movie5</item>
+    </string-array>
+    <string-array name="movie_ratings">
+        <item>@string/movie_rating1</item>
+        <item>@string/movie_rating2</item>
+        <item>@string/movie_rating3</item>
+        <item>@string/movie_rating4</item>
+        <item>@string/movie_rating5</item>
+    </string-array>
+
+    <array name="pictures">
+        <item>@drawable/inceptionjpg</item>
+        <item>@drawable/godfather</item>
+        <item>@drawable/drk_knight</item>
+        <item>@drawable/angry_men</item>
+        <item>@drawable/pulp_fiction</item>
+    </array>
 </resources>
