@@ -16,7 +16,7 @@ class ShowMovie : Activity(), View.OnClickListener {
         imageView = findViewById(R.id.image)
         imageView.setOnClickListener(this)
 
-
+        showMovie()
     }
 
     private fun showMovie() {
