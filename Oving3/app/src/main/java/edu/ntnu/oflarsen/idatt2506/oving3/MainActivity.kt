@@ -26,6 +26,7 @@ class MainActivity : Activity() {
 
         initQuitButton()
         initSpinner()
+        initList()
         //initMovieButtons() Deprecated
     }
 
@@ -50,6 +51,19 @@ class MainActivity : Activity() {
         }
     }
 
+
+    private fun initList(){
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, movies)
+        val listView = findViewById<ListView>(R.id.listView)
+        listView.adapter = adapter
+        listView.choiceMode = ListView.CHOICE_MODE_SINGLE
+        listView.onItemClickListener =
+            AdapterView.OnItemClickListener { parent: AdapterView<*>?, valgt: View, posisjon: Int, id: Long ->
+                findViewById<TextView>(R.id.beskrivelse).text = ratings[posisjon]
+                findViewById < Spinner >(R.id.spinner).setSelection(posisjon)
+            }
+    }
+
     private fun initMovieButtons() {
         val layout = findViewById<LinearLayout>(R.id.bildeknapp_layout)
         for (i in 0 until pictures!!.length()){
@@ -61,6 +75,7 @@ class MainActivity : Activity() {
             }
         }
     }
+
 
     private fun showBigPicture(nr: Int){
         startActivity(Intent("edu.ntnu.oflarsen.idatt2506.ShowMovie").putExtra("nr", nr))
