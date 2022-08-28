@@ -54,7 +54,7 @@ class CalculatorActivity : Activity() {
         if(correct){
             Toast.makeText(this, getString(R.string.correct), Toast.LENGTH_LONG).show()
         }else{
-            Toast.makeText(this, getString(R.string.wrong) + answer.toString(), Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.wrong) +" " + answer.toString(), Toast.LENGTH_LONG).show()
         }
     }
 

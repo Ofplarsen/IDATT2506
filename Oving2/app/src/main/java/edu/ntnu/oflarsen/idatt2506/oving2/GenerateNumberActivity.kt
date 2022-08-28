@@ -13,7 +13,11 @@ class GenerateNumberActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_random_number)
+
         upperLimit = intent.getIntExtra("upperLimit", upperLimit)
+        randomNumber = (0..upperLimit).random()
+        setResult(RESULT_OK, Intent().putExtra("numberValue", randomNumber))
+        finish()
     }
 
     /**
