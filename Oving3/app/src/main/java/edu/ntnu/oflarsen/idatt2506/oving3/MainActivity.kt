@@ -26,6 +26,7 @@ class MainActivity : Activity() {
 
         initQuitButton()
         initSpinner()
+        //initMovieButtons() Deprecated
     }
 
     private fun initQuitButton(){
@@ -45,6 +46,18 @@ class MainActivity : Activity() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
+    }
+
+    private fun initMovieButtons() {
+        val layout = findViewById<LinearLayout>(R.id.bildeknapp_layout)
+        for (i in 0 until pictures!!.length()){
+            val button = ImageButton(this, )
+            button.setImageDrawable(pictures!!.getDrawable(i))
+            layout.addView(button)
+            button.setOnClickListener {
+                showBigPicture(i)
             }
         }
     }
