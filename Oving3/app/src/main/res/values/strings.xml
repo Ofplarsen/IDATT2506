@@ -9,7 +9,7 @@
     <string name="movie4">12 Angry Men</string>
     <string name="movie_rating4">8.9</string>
     <string name="movie5">Pulp Fiction</string>
-    <string name="movie_rating5">88</string>
+    <string name="movie_rating5">8.8</string>
     <string name="avslutt">Quit</string>
     <string name="bildebeskrivelse">Description</string>
     <string-array name="movies">

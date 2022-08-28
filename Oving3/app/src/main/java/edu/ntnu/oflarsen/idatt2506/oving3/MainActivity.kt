@@ -1,15 +1,52 @@
 package edu.ntnu.oflarsen.idatt2506.oving3
 
+import android.app.Activity
 import android.content.Intent
+import android.content.res.TypedArray
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
+import android.widget.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : Activity() {
+
+    private var movies: Array<String> = arrayOf()
+    private var ratings: Array<String> = arrayOf()
+    private var pictures: TypedArray? = null
+    private var imageIDs: IntArray = intArrayOf()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        movies = resources.getStringArray(R.array.movies)
+        ratings = resources.getStringArray(R.array.movie_ratings)
+        pictures = resources.obtainTypedArray(R.array.pictures)
+
+        initQuitButton()
+        initSpinner()
+    }
+
+    private fun initQuitButton(){
+        val button = findViewById<Button>(R.id.button)
+        button.setOnClickListener { finish() }
+    }
+
+    private fun initSpinner() {
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, movies)
+        val spinner = findViewById<Spinner>(R.id.spinner)
+
+        spinner.adapter = adapter
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val text = "Rating: " + ratings[position]
+                findViewById<TextView>(R.id.beskrivelse).text = text
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
     }
 
     private fun showBigPicture(nr: Int){
