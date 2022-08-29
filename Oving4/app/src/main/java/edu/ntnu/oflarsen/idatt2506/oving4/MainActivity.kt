@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 
-class MainActivity : FragmentActivity() {
+class MainActivity : FragmentActivity(), Fragment1.OnFragmentInteractionListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.example)
@@ -23,5 +23,10 @@ class MainActivity : FragmentActivity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         setOrientation(newConfig)
+    }
+
+    override fun onFragmentInteraction(text: String?) {
+        val fragment2 = supportFragmentManager.findFragmentById(R.id.fragment2) as Fragment2
+        fragment2.setText(text)
     }
 }
