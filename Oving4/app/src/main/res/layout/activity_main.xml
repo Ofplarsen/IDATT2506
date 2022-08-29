@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,7 +8,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/questions"
-        android:name="inft2501.leksjon_04.QuestionsFragment"
+        android:name="edu.ntnu.oflarsen.idatt2506.oving4.QuestionsFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="4"
@@ -18,7 +17,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/solutions"
-        android:name="inft2501.leksjon_04.SolutionsFragment"
+        android:name="edu.ntnu.oflarsen.idatt2506.oving4.SolutionsFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
