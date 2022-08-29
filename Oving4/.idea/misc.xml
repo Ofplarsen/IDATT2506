@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/xray2/OneDrive/Documents/NTNU/DataIng2023/Host2022/Idatt2506/Ovinger/IDATT2506/Oving4/app/src/main/res/layout/activity_main.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/xray2/OneDrive/Documents/NTNU/DataIng2023/Host2022/Idatt2506/Ovinger/IDATT2506/Oving4/app/src/main/res/layout/example.xml" value="0.18697916666666667" />
+        <entry key="..\:/Users/xray2/OneDrive/Documents/NTNU/DataIng2023/Host2022/Idatt2506/Ovinger/IDATT2506/Oving4/app/src/main/res/layout/fragment_1.xml" value="0.18697916666666667" />
+        <entry key="..\:/Users/xray2/OneDrive/Documents/NTNU/DataIng2023/Host2022/Idatt2506/Ovinger/IDATT2506/Oving4/app/src/main/res/layout/fragment_2.xml" value="0.18697916666666667" />
+      </map>
+    </option>
+  </component>
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$" />
   </component>
