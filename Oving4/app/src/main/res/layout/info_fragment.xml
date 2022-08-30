@@ -14,7 +14,7 @@
             android:text="Title" />
 
         <ImageView
-            android:id="@+id/move_poster"
+            android:id="@+id/movie_poster"
             android:layout_width="match_parent"
             android:layout_height="215dp"
             app:srcCompat="@drawable/inception" />

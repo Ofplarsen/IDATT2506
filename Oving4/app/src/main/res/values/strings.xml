@@ -4,15 +4,25 @@
     <string name="previous">Previous</string>
 
     <string name="movie1">Inception</string>
-    <string name="movie_desc1">8.8</string>
+    <string name="movie_desc1">
+        A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O., but his tragic past may doom the project and his team to disaster.
+    </string>
     <string name="movie2">Godfather</string>
-    <string name="movie_desc2">9.2</string>
+    <string name="movie_desc2">
+        It is the first installment in The Godfather trilogy. The story, spanning from 1945 to 1955, chronicles the Corleone family under patriarch Vito Corleone (Brando), focusing on the transformation of his youngest son, Michael Corleone (Pacino), from reluctant family outsider to ruthless mafia boss.
+    </string>
     <string name="movie3">The Dark Knight</string>
-    <string name="movie_desc3">9.0</string>
+    <string name="movie_desc3">
+        Set within a year after the events of Batman Begins (2005), Batman, Lieutenant James Gordon, and new District Attorney Harvey Dent successfully begin to round up the criminals that plague Gotham City, until a mysterious and sadistic criminal mastermind known only as "The Joker" appears in Gotham, creating a new wave of chaos.
+    </string>
     <string name="movie4">12 Angry Men</string>
-    <string name="movie_desc4">8.9</string>
+    <string name="movie_desc4">
+        "12 Angry Men" focuses on a jurys deliberations in a capital murder case. A 12-man jury is sent to begin deliberations in the first-degree murder trial of an 18-year old Puerto Rican boy accused in the stabbing death of his father, where a guilty verdict means an automatic death sentence.
+    </string>
     <string name="movie5">Pulp Fiction</string>
-    <string name="movie_desc5">8.8</string>
+    <string name="movie_desc5">
+        Faced with lifes cruel irony, the unpredictable stories of a well-dressed pair of low-level hitmen; a gangsters statuesque moll, and a double-crossing prizefighter become inextricably intertwined, as the small-time crooks, Honey Bunny and Pumpkin, summon up the courage to hold up their favourite L.A. diner.
+    </string>
 
     <string-array name="movies">
         <item>@string/movie1</item>
