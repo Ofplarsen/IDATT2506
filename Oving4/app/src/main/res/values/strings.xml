@@ -22,7 +22,7 @@
         <item>@string/movie5</item>
     </string-array>
 
-    <string-array name="movie_ratings">
+    <string-array name="movie_descs">
         <item>@string/movie_desc1</item>
         <item>@string/movie_desc2</item>
         <item>@string/movie_desc3</item>
