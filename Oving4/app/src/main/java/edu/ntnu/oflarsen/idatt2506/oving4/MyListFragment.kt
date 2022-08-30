@@ -2,25 +2,19 @@ package edu.ntnu.oflarsen.idatt2506.oving4
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.ListFragment
 
-class ListFragment  : ListFragment() {
+class MyListFragment  : ListFragment(), MovieButtonChange {
 
     private var mListener: OnFragmentInteractionListener? = null
-
     private var movies: Array<String> = arrayOf()
     private var pictures : TypedArray? = null
     private var descriptions: Array<String> = arrayOf()
-    private var clicked = -1
+    private var clicked = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +28,8 @@ class ListFragment  : ListFragment() {
 
     }
 
+
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mListener = try {
@@ -43,7 +39,6 @@ class ListFragment  : ListFragment() {
                 "$activity must implement OnFragmentInteractionListener"
             )
         }
-
 
     }
 
@@ -66,4 +61,23 @@ class ListFragment  : ListFragment() {
     private fun setMovie(position: Int){
         mListener!!.onFragmentInteraction(movies[position], pictures!!.getDrawable(position), descriptions[position])
     }
+
+    override fun nextMovie() {
+        if(clicked==4)
+            clicked = 0
+        else
+            clicked++
+
+        setMovie(clicked)
+    }
+
+
+    override fun previousMovie() {
+        if(clicked==0)
+            clicked = 4
+        else
+            clicked--
+        setMovie(clicked)
+    }
+
 }

@@ -8,7 +8,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment1"
-        android:name="edu.ntnu.oflarsen.idatt2506.oving4.ListFragment"
+        android:name="edu.ntnu.oflarsen.idatt2506.oving4.MyListFragment"
         android:layout_width="0px"
         android:layout_height="match_parent"
         android:layout_weight="1" />

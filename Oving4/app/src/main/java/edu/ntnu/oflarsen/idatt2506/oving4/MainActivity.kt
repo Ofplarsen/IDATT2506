@@ -2,13 +2,15 @@ package edu.ntnu.oflarsen.idatt2506.oving4
 
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity(), ListFragment.OnFragmentInteractionListener {
+
+class MainActivity : AppCompatActivity(), MyListFragment.OnFragmentInteractionListener {
+    private var mListener: MyListFragment.OnFragmentInteractionListener? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setOrientation(resources.configuration)
@@ -37,5 +39,25 @@ class MainActivity : AppCompatActivity(), ListFragment.OnFragmentInteractionList
     override fun onFragmentInteraction(text: String?, picture: Drawable?, description: String?) {
         val fragment2 = supportFragmentManager.findFragmentById(R.id.fragment2) as InfoFragment
         fragment2.setMovie(text, picture, description)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_previous -> previousMovie()
+            R.id.menu_next -> nextMovie()
+            else -> return false
+        }
+        return true
+    }
+
+    private fun nextMovie(){
+        val fragmentList = supportFragmentManager.findFragmentById(R.id.fragment1) as MyListFragment
+        fragmentList.nextMovie()
+
+    }
+
+    private fun previousMovie(){
+        val fragmentList = supportFragmentManager.findFragmentById(R.id.fragment1) as MyListFragment
+        fragmentList.previousMovie()
     }
 }

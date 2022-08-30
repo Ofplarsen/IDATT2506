@@ -4,11 +4,11 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/button_previous"
+        android:id="@+id/menu_previous"
         android:title="@string/previous"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/button_next"
+        android:id="@+id/menu_next"
         android:title="@string/next"
         app:showAsAction="ifRoom"
         />
