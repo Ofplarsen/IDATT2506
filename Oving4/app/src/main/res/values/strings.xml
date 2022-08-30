@@ -2,4 +2,39 @@
     <string name="app_name">Oving4</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+
+    <string name="movie1">Inception</string>
+    <string name="movie_desc1">8.8</string>
+    <string name="movie2">Godfather</string>
+    <string name="movie_desc2">9.2</string>
+    <string name="movie3">The Dark Knight</string>
+    <string name="movie_desc3">9.0</string>
+    <string name="movie4">12 Angry Men</string>
+    <string name="movie_desc4">8.9</string>
+    <string name="movie5">Pulp Fiction</string>
+    <string name="movie_desc5">8.8</string>
+
+    <string-array name="movies">
+        <item>@string/movie1</item>
+        <item>@string/movie2</item>
+        <item>@string/movie3</item>
+        <item>@string/movie4</item>
+        <item>@string/movie5</item>
+    </string-array>
+
+    <string-array name="movie_ratings">
+        <item>@string/movie_desc1</item>
+        <item>@string/movie_desc2</item>
+        <item>@string/movie_desc3</item>
+        <item>@string/movie_desc4</item>
+        <item>@string/movie_desc5</item>
+    </string-array>
+
+    <array name="pictures">
+        <item>@drawable/inception</item>
+        <item>@drawable/godfather</item>
+        <item>@drawable/drk_knight</item>
+        <item>@drawable/angry_men</item>
+        <item>@drawable/pulp_fiction</item>
+    </array>
 </resources>
