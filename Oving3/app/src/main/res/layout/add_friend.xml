@@ -28,7 +28,6 @@
         android:layout_marginEnd="103dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -56,4 +55,14 @@
         app:layout_constraintBottom_toTopOf="@+id/add_date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+    <Button
+            android:text="@string/add"
+            android:onClick="addFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="63dp"
+            android:layout_marginEnd="159dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="158dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
