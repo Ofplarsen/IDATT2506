@@ -46,12 +46,9 @@ class MainActivity : Activity() {
         }
 
         if(requestCodeAdd == requestCode){
-            val name = data.getStringExtra("")
-            val date = data.getStringExtra("Date")
-            if(date == null || name == null){
-                return
-            }
-            friends.add(Friend(name, date))
+            val friend = data.getStringArrayExtra("friend")
+            friends.add(Friend(friend?.get(0) ?: "Unknown", friend?.get(1) ?: "Unknown"))
+            initList()
             return
         }
 

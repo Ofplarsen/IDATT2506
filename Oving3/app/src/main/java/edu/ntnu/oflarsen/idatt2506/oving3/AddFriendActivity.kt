@@ -10,12 +10,24 @@ import android.widget.*
 import java.util.*
 
 class AddFriendActivity : Activity() {
-
+    private var mode = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mode = intent.getIntExtra("edit_mode", mode)
         setContentView(R.layout.add_friend)
     }
 
+    fun editFriend(v : View?){
+        val name = findViewById<EditText>(R.id.add_name)
+        val date = findViewById<EditText>(R.id.add_date)
+
+        if(!checkInput(name.text.toString(), date.text.toString()))
+            return
+
+        val friend = arrayOf(name.text.toString(), date.text.toString())
+        setResult(RESULT_OK, Intent().putExtra("friend", friend))
+        finish()
+    }
 
     fun addFriend(v : View?){
         val name = findViewById<EditText>(R.id.add_name)
@@ -24,15 +36,15 @@ class AddFriendActivity : Activity() {
         if(!checkInput(name.text.toString(), date.text.toString()))
             return
 
-        setResult(RESULT_OK, Intent().putExtra("Name", name.text.toString()))
-        setResult(RESULT_OK, Intent().putExtra("Date", date.text.toString()))
+        val friend = arrayOf(name.text.toString(), date.text.toString())
+        setResult(RESULT_OK, Intent().putExtra("friend", friend))
         finish()
     }
 
 
     private fun checkInput(name: String, date: String): Boolean{
         if(name.isBlank() && name.isBlank()){
-            Toast.makeText(this, "Please input name and date!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please input name and brith date!", Toast.LENGTH_SHORT).show()
             return false
         }
         if(name.isBlank()){
@@ -40,7 +52,7 @@ class AddFriendActivity : Activity() {
             return false
         }
         if(name.isBlank()){
-            Toast.makeText(this, "Please input date!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please input brith date!", Toast.LENGTH_SHORT).show()
             return false
         }
         return true;
