@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Oving5</string>
+    <string name="message">Bruk menyen til å teste HTTP</string>
 </resources>
