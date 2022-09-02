@@ -12,9 +12,10 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class MainActivity : Activity() {
-    private var friends: ArrayList<Friend> = arrayListOf(Friend("Olav", "01.01.2022"))
+    private var friends: ArrayList<Friend> = arrayListOf(Friend("Olav Finne Præsteng Larsen", "29.09.2001"),
+        Friend("Amund F. P. Larsen", "14.04.2004"), Friend("Øyvind F. P. Larsen", "23.03.2008"))
     private val requestCodeAdd: Int = 0
-
+    private val requestCodeEdit: Int = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.show_friends)
@@ -28,13 +29,18 @@ class MainActivity : Activity() {
         listView.choiceMode = ListView.CHOICE_MODE_SINGLE
         listView.onItemClickListener =
             AdapterView.OnItemClickListener { parent: AdapterView<*>?, valgt: View, posisjon: Int, id: Long ->
-                //findViewById<TextView>(R.id.beskrivelse).text = dyrebeskrivelse[posisjon]
-                //findViewById<Spinner>(R.id.spinner).setSelection(posisjon)
+                editFriendStart(friends[posisjon])
             }
     }
 
+    fun editFriendStart(friend: Friend){
+        val intent = Intent("oflarsen.idatt2506.FriendActivity")
+        intent.putExtra("mode", arrayOf(friend.name, friend.date))
+        startActivityForResult(intent, requestCodeEdit)
+    }
+
     fun addFriendStart(v: View?) {
-        val intent = Intent("oflarsen.idatt2506.AddFriendActivity")
+        val intent = Intent("oflarsen.idatt2506.FriendActivity")
         startActivityForResult(intent, requestCodeAdd)
     }
 
@@ -52,6 +58,14 @@ class MainActivity : Activity() {
             return
         }
 
+        if(requestCodeEdit == requestCode){
+            val friend = data.getStringArrayExtra("friend")
+            val f = friends.find { it.name == friend!![2] }
+            f!!.name = friend?.get(0) ?: "Unknown"
+            f.date = friend?.get(1) ?: "01.01.2000"
+            initList()
+            return
+        }
 
     }
 
