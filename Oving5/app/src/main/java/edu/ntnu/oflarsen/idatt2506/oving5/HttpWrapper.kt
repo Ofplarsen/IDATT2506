@@ -30,9 +30,11 @@ class HttpWrapper(private val URL: String) {
 	 * */
 	fun get(parameterList: Map<String, String>): String {
 		val connection = openConnection(URL + encodeParameters(parameterList))
+		Log.i("http-request", "Sending request: ${URL + encodeParameters(parameterList)}")
 		connection.inputStream.use { response ->
 			return readResponseBody(response, getCharSet(connection))
 		}
+
 	}
 
 	/**
@@ -70,7 +72,7 @@ class HttpWrapper(private val URL: String) {
 		connection.inputStream.use { inputStream ->
 			response += readResponseBody(inputStream, getCharSet(connection))
 		}
-		Log.i("http-request", "Sending request: ${URL + encodeParameters(parameterList)}")
+
 		return response
 	}
 
@@ -109,6 +111,7 @@ class HttpWrapper(private val URL: String) {
 			Log.e("readResponseBody()", e.toString())
 			body += "******* Problem reading from server *******\n$e"
 		}
+		body = body?.replace("null", "")
 		return body
 	}
 

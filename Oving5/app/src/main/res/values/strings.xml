@@ -4,4 +4,7 @@
     <string name="label_card">Credit Card</string>
     <string name="login">Login</string>
     <string name="start">Welcome</string>
+    <string name="label_number">Number</string>
+    <string name="try_nmb">Try Number</string>
+    <string name="restart">Restart</string>
 </resources>
