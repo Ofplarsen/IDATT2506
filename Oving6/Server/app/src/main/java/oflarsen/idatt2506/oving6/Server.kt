@@ -23,7 +23,7 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
      * ui = "noe"
      * ```
      */
-    private var clients: ArrayList<Socket> = ArrayList()
+    private var clients: MutableList<Socket> = mutableListOf()
 
     private var ui: String? = ""
         set(str) {
@@ -37,14 +37,12 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
             try {
                 ui = "Starter Tjener ..."
                 Log.i("Connection", "Booting server")
-                // "innapropriate blocking method call" advarsel betyr at tråden
-                // stopper helt opp og ikke går til neste linje før denne fullfører, i dette
-                // eksempelet er ikke dette så farlig så vi ignorerer advarselen.
                 ServerSocket(PORT).use { serverSocket: ServerSocket ->
                     while (true){
                         val clientSocket = serverSocket.accept()
                         clients.add(clientSocket)
                         ClientHandler(clientSocket).start()
+                        Log.i("Clients", clients.size.toString())
                     }
                 }
             } catch (e: IOException) {
