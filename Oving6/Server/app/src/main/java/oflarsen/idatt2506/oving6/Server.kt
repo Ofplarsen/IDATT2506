@@ -1,5 +1,6 @@
 package oflarsen.idatt2506.oving6
 
+import android.util.Log
 import android.widget.TextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +34,7 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
 
             try {
                 ui = "Starter Tjener ..."
+                Log.i("Connection", "Booting server")
                 // "innapropriate blocking method call" advarsel betyr at tråden
                 // stopper helt opp og ikke går til neste linje før denne fullfører, i dette
                 // eksempelet er ikke dette så farlig så vi ignorerer advarselen.
@@ -43,7 +45,7 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
                     serverSocket.accept().use { clientSocket: Socket ->
 
                         ui = "En Klient koblet seg til:\n$clientSocket"
-
+                        Log.i("Connection", "Client connected: $clientSocket")
                         //send tekst til klienten
                         sendToClient(clientSocket, "Velkommen Klient!")
 
@@ -53,6 +55,7 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
+                Log.e("Connection", e.message.toString())
                 ui = e.message
             }
         }
@@ -61,12 +64,14 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
     private fun readFromClient(socket: Socket) {
         val reader = BufferedReader(InputStreamReader(socket.getInputStream()))
         val message = reader.readLine()
+        Log.i("Message", "Client said: $message")
         ui = "Klienten sier:\n$message"
     }
 
     private fun sendToClient(socket: Socket, message: String) {
         val writer = PrintWriter(socket.getOutputStream(), true)
         writer.println(message)
+        Log.i("Message", "Sent to client: $message")
         ui = "Sendte følgende til klienten:\n$message"
     }
 }
