@@ -23,6 +23,8 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
      * ui = "noe"
      * ```
      */
+    private var clients: ArrayList<Socket> = ArrayList()
+
     private var ui: String? = ""
         set(str) {
             MainScope().launch { textView.text = str }
@@ -39,18 +41,10 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
                 // stopper helt opp og ikke går til neste linje før denne fullfører, i dette
                 // eksempelet er ikke dette så farlig så vi ignorerer advarselen.
                 ServerSocket(PORT).use { serverSocket: ServerSocket ->
-
-                    ui = "ServerSocket opprettet, venter på at en klient kobler seg til...."
-
-                    serverSocket.accept().use { clientSocket: Socket ->
-
-                        ui = "En Klient koblet seg til:\n$clientSocket"
-                        Log.i("Connection", "Client connected: $clientSocket")
-                        //send tekst til klienten
-                        sendToClient(clientSocket, "Velkommen Klient!")
-
-                        // Hent tekst fra klienten
-                        readFromClient(clientSocket)
+                    while (true){
+                        val clientSocket = serverSocket.accept()
+                        clients.add(clientSocket)
+                        ClientHandler(clientSocket).start()
                     }
                 }
             } catch (e: IOException) {

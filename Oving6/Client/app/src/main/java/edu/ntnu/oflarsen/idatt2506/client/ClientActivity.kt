@@ -19,6 +19,7 @@ class ClientActivity : Activity() {
 
     fun sendMessage(v: View){
         val message = findViewById<EditText>(R.id.message)
-        client.sendMessage(message.toString())
+
+        client.sendMessage(message.text.toString())
     }
 }

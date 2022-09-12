@@ -2,6 +2,8 @@ package edu.ntnu.oflarsen.idatt2506.client
 
 import android.util.Log
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.IOException
@@ -14,13 +16,14 @@ class Client(
     private val SERVER_IP: String = "10.0.2.2",
     private val SERVER_PORT: Int = 12345,
 ) {
-    private lateinit var connection: Socket;
+    private lateinit var connection: Socket
 
     private var ui: String? = ""
         set(str) {
             MainScope().launch { textView.text = str }
             field = str
         }
+
 
 
     fun start() {
@@ -37,8 +40,8 @@ class Client(
                     readFromServer(socket)
 
                     sendToServer(socket, "Heisann Tjener! Hyggelig å hilse på deg")
-
                 }
+                Log.i("Connection", "Updated connection variable")
             } catch (e: IOException) {
                 e.printStackTrace()
                 Log.e("Connection", e.message.toString())
@@ -48,13 +51,10 @@ class Client(
     }
 
     fun sendMessage(message: String){
-        if(!::connection.isInitialized){
-            Log.e("Message", "Connection not inited yet")
-            return
-        }
+
         CoroutineScope(Dispatchers.IO).launch {
             try{
-                connection.use { socket: Socket ->
+                Socket(SERVER_IP, SERVER_PORT).use { socket: Socket ->
                     Log.i("Message", "Sending message: $message")
                     sendToServer(socket, message)
                 }
