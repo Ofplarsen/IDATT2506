@@ -23,7 +23,7 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
      * ui = "noe"
      * ```
      */
-    private var clients: MutableList<Socket> = mutableListOf()
+    private var clients: MutableList<ClientHandler> = mutableListOf()
 
     private var ui: String? = ""
         set(str) {
@@ -40,8 +40,9 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
                 ServerSocket(PORT).use { serverSocket: ServerSocket ->
                     while (true){
                         val clientSocket = serverSocket.accept()
-                        clients.add(clientSocket)
-                        ClientHandler(clientSocket).start()
+                        val clientHandler = ClientHandler(clientSocket)
+                        clients.add(clientHandler)
+                        clientHandler.start()
                         Log.i("Clients", clients.size.toString())
                     }
                 }
@@ -53,15 +54,14 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
         }
     }
 
-    private fun readFromClient(socket: Socket) {
-        val reader = BufferedReader(InputStreamReader(socket.getInputStream()))
-        val message = reader.readLine()
-        Log.i("Message", "Client said: $message")
-        ui = "Klienten sier:\n$message"
-    }
-
     private fun sendToClients(senderSocket: Socket, message: String) {
         val writer = PrintWriter(senderSocket.getOutputStream(), true)
+        clients.forEach {
+            if (!it.equals(senderSocket))
+                CoroutineScope(Dispatchers.IO).launch {
+                    it.sendToClient(message)
+                }
+        }
         writer.println(message)
         Log.i("Message", "Sent to client: $message")
         ui = "Sendte følgende til klienten:\n$message"

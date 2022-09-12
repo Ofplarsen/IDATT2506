@@ -19,7 +19,7 @@ class ClientHandler (val clientSocket: Socket){
             try {
                 Log.i("Connection", "Client connected: $clientSocket")
                 //send tekst til klienten
-                sendToClient(clientSocket, "Welcome!")
+                sendToClient("Welcome!")
                 // Hent tekst fra klienten
 
                 readFromClient(clientSocket)
@@ -51,11 +51,28 @@ class ClientHandler (val clientSocket: Socket){
         }
     }
 
-    private suspend fun sendToClient(socket: Socket, message: String) = coroutineScope {
+    suspend fun sendToClient(message: String) = coroutineScope {
         CoroutineScope(Dispatchers.IO).launch {
-            val writer = PrintWriter(socket.getOutputStream(), true)
+            val writer = PrintWriter(clientSocket.getOutputStream(), true)
             writer.println(message)
             println("Sent following to clients: $message")
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ClientHandler
+
+        if (clientSocket != other.clientSocket) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return clientSocket.hashCode()
+    }
+
+
 }
