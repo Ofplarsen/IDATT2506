@@ -1,6 +1,7 @@
 package edu.ntnu.oflarsen.idatt2506.client
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -12,14 +13,15 @@ class ClientActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.client)
-        textView = findViewById<TextView>(R.id.received)
+        textView = findViewById(R.id.received)
+        val edit = findViewById<EditText>(R.id.message)
         client = Client(textView)
-        Client(textView).start()
+        client.start()
     }
 
     fun sendMessage(v: View){
+        Log.i("INfo", "Clicked send")
         val message = findViewById<EditText>(R.id.message)
-
-        client.sendMessage(message.text.toString())
+        client.onClickSend(message.text.toString())
     }
 }

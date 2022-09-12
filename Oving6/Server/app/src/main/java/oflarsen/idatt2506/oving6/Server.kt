@@ -60,8 +60,8 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
         ui = "Klienten sier:\n$message"
     }
 
-    private fun sendToClient(socket: Socket, message: String) {
-        val writer = PrintWriter(socket.getOutputStream(), true)
+    private fun sendToClients(senderSocket: Socket, message: String) {
+        val writer = PrintWriter(senderSocket.getOutputStream(), true)
         writer.println(message)
         Log.i("Message", "Sent to client: $message")
         ui = "Sendte følgende til klienten:\n$message"

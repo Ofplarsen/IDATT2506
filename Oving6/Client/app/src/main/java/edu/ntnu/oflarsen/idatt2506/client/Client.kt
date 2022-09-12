@@ -1,6 +1,7 @@
 package edu.ntnu.oflarsen.idatt2506.client
 
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -16,7 +17,7 @@ class Client(
     private val SERVER_IP: String = "10.0.2.2",
     private val SERVER_PORT: Int = 12345,
 ) {
-    private lateinit var connection: Socket
+    private var connection: Socket? = null
 
     private var ui: String? = ""
         set(str) {
@@ -30,18 +31,9 @@ class Client(
         CoroutineScope(Dispatchers.IO).launch {
             ui = "Kobler til tjener..."
             try {
-
-                Socket(SERVER_IP, SERVER_PORT).use { socket: Socket ->
-                    connection = socket
-                    ui = "Koblet til tjener:\n$socket"
-                    Log.i("Connection", "Connected to server: $socket")
-
-
-                    readFromServer(socket)
-
-                    sendToServer(socket, "Heisann Tjener! Hyggelig å hilse på deg")
-                }
+                connection = Socket(SERVER_IP, SERVER_PORT)
                 Log.i("Connection", "Updated connection variable")
+                listenForMessage()
             } catch (e: IOException) {
                 e.printStackTrace()
                 Log.e("Connection", e.message.toString())
@@ -50,13 +42,44 @@ class Client(
         }
     }
 
-    fun sendMessage(message: String){
+    private fun listenForMessage(){
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                connection?.let{
+                    while(true){
+                        val msg = readFromServer(it)
+                        if( msg== null){
+                            it.close()
+                            break
+                        }else{
+                            Log.e("Connection", msg)
+                        }
+                    }
+                }
 
+            } catch (e: IOException) {
+                e.printStackTrace()
+                Log.e("Connection", e.message.toString())
+                ui = e.message
+            }
+        }
+    }
+
+    fun onClickSend(message: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            Log.i("INfo", "SEnding")
+            sendMessage(message)
+        }
+    }
+
+    private suspend fun sendMessage(message: String) = coroutineScope{
         CoroutineScope(Dispatchers.IO).launch {
             try{
-                Socket(SERVER_IP, SERVER_PORT).use { socket: Socket ->
+                if(connection == null)
+                    Log.i("YIKES", "YIKES")
+                connection?.let {
                     Log.i("Message", "Sending message: $message")
-                    sendToServer(socket, message)
+                    sendToServer(it, message)
                 }
             }catch (e: IOException){
                 Log.e("Message",e.message.toString())
@@ -64,17 +87,19 @@ class Client(
         }
     }
 
-    private fun readFromServer(socket: Socket) {
+    private suspend fun readFromServer(socket: Socket): String? = coroutineScope {
         val reader = BufferedReader(InputStreamReader(socket.getInputStream()))
         val message = reader.readLine()
         Log.i("Message", "Server said: $message")
         ui = "Melding fra tjeneren:\n$message"
+        return@coroutineScope message
     }
 
-    private fun sendToServer(socket: Socket, message: String) {
+    private suspend fun sendToServer(socket: Socket, message: String) = coroutineScope{
         val writer = PrintWriter(socket.getOutputStream(), true)
         writer.println(message)
         Log.i("Message", "Sent to server: $message")
         ui = "Sendte følgende til tjeneren: \n\"$message\""
     }
+
 }
