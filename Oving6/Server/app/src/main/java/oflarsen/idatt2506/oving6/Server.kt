@@ -20,13 +20,23 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
      * ui = "noe"
      * ```
      */
-    var clients: MutableList<Socket> = mutableListOf()
+    private var clients: MutableList<Socket> = mutableListOf()
+    private var traffic: MutableList<String> = mutableListOf()
 
     private var ui: String? = ""
         set(str) {
-            MainScope().launch { textView.text = str }
+            if (str != null) {
+                traffic.add(str)
+            }
+            MainScope().launch { textView.text = createChatString() }
             field = str
         }
+
+    private fun createChatString(): String{
+        var str: String = "";
+        traffic.forEach { str += it + "\n" }
+        return str
+    }
 
     fun start() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -45,7 +55,7 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
             } catch (e: IOException) {
                 e.printStackTrace()
                 Log.e("Connection", e.message.toString())
-                ui = e.message
+                ui = "Error: $e.message"
             }
         }
     }
@@ -55,6 +65,7 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
 
             try {
                 Log.i("Connection", "Client connected: $clientSocket")
+                ui = "Client connected: ${clientSocket.port}"
                 //send tekst til klienten
                 sendToClient(clientSocket,"Welcome!")
                 // Hent tekst fra klienten
@@ -70,18 +81,19 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
 
     private suspend fun sendToClients(senderSocket: Socket, message: String) = coroutineScope {
         clients.forEach {
-            if(it.isClosed){
-                clients.remove(it)
-            }
-            else if (it != senderSocket)
-                CoroutineScope(Dispatchers.IO).launch {
-                    sendToClient(it,message)
+            CoroutineScope(Dispatchers.IO).launch {
+                if(it.isClosed){
+                    clients.remove(it)
                 }
-            else{
-                Log.i("Message", "Found host: " + clients.size.toString())
+                else if (it != senderSocket)
+                    sendToClient(it,message)
+                else{
+                    Log.i("Message", "Found host: " + clients.size.toString())
+                }
             }
+
         }
-        ui = "Sendte følgende til klienten:\n$message"
+        ui = "Sent following to clients: $message"
     }
 
     private suspend fun readFromClient(socket: Socket) = coroutineScope {
@@ -97,6 +109,7 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
                 } else {
 
                     println("Client says: $message")
+                    ui = "Recieved from ${socket.port}: $message"
                     sendToClients(socket, message)
                 }
             }

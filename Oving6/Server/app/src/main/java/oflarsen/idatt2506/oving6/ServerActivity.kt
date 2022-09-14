@@ -9,7 +9,7 @@ class ServerActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.server)
-        val textView = findViewById<TextView>(R.id.received)
+        val textView = findViewById<TextView>(R.id.traffic)
         Server(textView).start()
     }
 }
