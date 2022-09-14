@@ -69,15 +69,18 @@ class Server(private val textView: TextView, private val PORT: Int = 12345) {
     }
 
     private suspend fun sendToClients(senderSocket: Socket, message: String) = coroutineScope {
-        val writer = PrintWriter(senderSocket.getOutputStream(), true)
         clients.forEach {
-            if (it != senderSocket)
+            if(it.isClosed){
+                clients.remove(it)
+            }
+            else if (it != senderSocket)
                 CoroutineScope(Dispatchers.IO).launch {
                     sendToClient(it,message)
                 }
+            else{
+                Log.i("Message", "Found host: " + clients.size.toString())
+            }
         }
-        writer.println(message)
-        Log.i("Message", "Sent to client: $message")
         ui = "Sendte følgende til klienten:\n$message"
     }
 
