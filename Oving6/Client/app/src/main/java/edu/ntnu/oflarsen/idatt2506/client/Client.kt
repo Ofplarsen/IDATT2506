@@ -18,14 +18,23 @@ class Client(
     private val SERVER_PORT: Int = 12345,
 ) {
     private var connection: Socket? = null
+    private var messagesReceived: ArrayList<String> = arrayListOf()
 
     private var ui: String? = ""
         set(str) {
-            MainScope().launch { textView.text = str }
+            if (str != null) {
+                messagesReceived.add(str)
+            }
+            MainScope().launch { textView.text = createChatString() }
             field = str
         }
 
+    private fun createChatString(): String{
+        var str: String = "";
+        messagesReceived.forEach { str += it + "\n" }
 
+        return str
+    }
 
     fun start() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -91,7 +100,7 @@ class Client(
         val reader = BufferedReader(InputStreamReader(socket.getInputStream()))
         val message = reader.readLine()
         Log.i("Message", "Server said: $message")
-        ui = "Melding fra tjeneren:\n$message"
+        ui = "R: $message"
         return@coroutineScope message
     }
 
@@ -99,7 +108,7 @@ class Client(
         val writer = PrintWriter(socket.getOutputStream(), true)
         writer.println(message)
         Log.i("Message", "Sent to server: $message")
-        ui = "Sendte følgende til tjeneren: \n\"$message\""
+        ui = "S: $message"
     }
 
 }

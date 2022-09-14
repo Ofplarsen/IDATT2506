@@ -20,7 +20,7 @@ class ClientActivity : Activity() {
     }
 
     fun sendMessage(v: View){
-        Log.i("INfo", "Clicked send")
+        Log.i("Info", "Clicked send")
         val message = findViewById<EditText>(R.id.message)
         client.onClickSend(message.text.toString())
     }
