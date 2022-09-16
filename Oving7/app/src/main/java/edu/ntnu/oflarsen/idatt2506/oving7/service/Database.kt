@@ -2,6 +2,7 @@ package edu.ntnu.oflarsen.idatt2506.oving7.service
 
 import android.content.Context
 import edu.ntnu.oflarsen.idatt2506.oving7.managers.DatabaseManager
+import edu.ntnu.oflarsen.idatt2506.oving7.models.Movie
 
 class Database (context: Context) : DatabaseManager(context) {
 
@@ -21,12 +22,8 @@ class Database (context: Context) : DatabaseManager(context) {
             e.printStackTrace()
         }
     }
-
-    val allAuthors: ArrayList<String>
-        get() = performQuery(TABLE_AUTHOR, arrayOf(AUTHOR_NAME))
-
-    val allBooks: ArrayList<String>
-        get() = performQuery(TABLE_BOOK, arrayOf(ID, BOOK_TITLE), null)
+    val allMovies: ArrayList<String>
+        get() = performQuery(TABLE_MOVIE, arrayOf(MOVIE_TITLE))
 
 
     val allBooksAndAuthors: ArrayList<String>
