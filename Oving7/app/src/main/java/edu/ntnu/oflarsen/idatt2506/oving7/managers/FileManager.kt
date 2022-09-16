@@ -1,11 +1,16 @@
 package edu.ntnu.oflarsen.idatt2506.oving7.managers
 
 import androidx.appcompat.app.AppCompatActivity
+import edu.ntnu.oflarsen.idatt2506.oving7.models.Movie
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import edu.ntnu.oflarsen.idatt2506.oving7.R
 import java.io.*
 
 class FileManager(private val activity: AppCompatActivity) {
 
     private val filename: String = "movies.txt"
+    private val mapper = jacksonObjectMapper()
 
     private var dir: File = activity.filesDir
     private var file: File = File(dir, filename)
@@ -14,7 +19,7 @@ class FileManager(private val activity: AppCompatActivity) {
     private var externalFile = File(externalDir, filename)
 
 
-    fun write(str: String) {
+    private fun write(str: String) {
         PrintWriter(file).use { writer ->
             writer.println(str)
         }
@@ -24,6 +29,17 @@ class FileManager(private val activity: AppCompatActivity) {
         BufferedReader(FileReader(file)).use { reader ->
             return reader.readLine()
         }
+    }
+
+    fun writeMovies(movies: List<Movie>){
+        val serialized = mapper.writeValueAsString(movies)
+        write(serialized)
+    }
+
+    fun readMovies(): List<Movie> {
+        val json = readFileFromResFolder(R.raw.movies)
+
+        return mapper.readValue(json)
     }
 
     /**

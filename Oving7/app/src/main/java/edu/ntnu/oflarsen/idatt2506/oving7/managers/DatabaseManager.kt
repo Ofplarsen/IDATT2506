@@ -17,7 +17,7 @@ open class DatabaseManager(context: Context) :
         const val ID = "_id"
 
         const val TABLE_MOVIE = "MOVIE"
-        const val MOVIE_NAME = "name"
+        const val MOVIE_TITLE = "title"
         const val MOVIE_DIRECTOR = "director"
 
         const val TABLE_PERSON = "PERSON"
@@ -42,7 +42,7 @@ open class DatabaseManager(context: Context) :
         db.execSQL(
             """create table $TABLE_MOVIE (
 						$ID integer primary key autoincrement, 
-                        $MOVIE_NAME text unique not null,
+                        $MOVIE_TITLE text unique not null,
 						$MOVIE_DIRECTOR numeric,
                         FOREIGN KEY($MOVIE_DIRECTOR) REFERENCES $TABLE_PERSON($ID)
 						);"""
