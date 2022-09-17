@@ -37,7 +37,7 @@ open class DatabaseManager(context: Context) :
         )
 
         val JOIN_MOVIE_PERSON = arrayOf(
-            "$TABLE_MOVIE.$ID=$TABLE_PERSON.$ID"
+            "$TABLE_MOVIE.$MOVIE_DIRECTOR=$TABLE_PERSON.$ID"
         )
 
 
@@ -93,11 +93,11 @@ open class DatabaseManager(context: Context) :
 
     fun insertMovie(movie: Movie){
         writableDatabase.use { database ->
-            val directorId = insertPerson(movie.director)
+            val directorId = insertPerson(database, movie.director)
             movie.director.id = directorId
 
             val actorIds = arrayListOf<Long>()
-            movie.actors.forEach { actorIds.add(insertPerson(it)) }
+            movie.actors.forEach { actorIds.add(insertPerson(database, it)) }
 
             val movieId = insertMovie(database,movie)
 
@@ -139,13 +139,8 @@ open class DatabaseManager(context: Context) :
 
     }
 
-    private fun insertPerson(person: Person): Long{
-        writableDatabase.use { database ->
-
-            val personId = insertPerson(database, person.firstname, person.lastname)
-
-            return personId
-        }
+    private fun insertPerson(database: SQLiteDatabase, person: Person): Long{
+        return insertPerson(database, person.firstname, person.lastname)
     }
 
 
@@ -229,7 +224,7 @@ open class DatabaseManager(context: Context) :
         select: Array<String>, from: Array<String>, join: Array<String>, where: String? = null
     ): ArrayList<String> {
 
-        val query = StringBuilder("SELECT ")
+        val query = StringBuilder("SELECT DISTINCT ")
         for ((i, field) in select.withIndex()) {
             query.append(field)
             if (i != select.lastIndex) query.append(", ")
@@ -252,6 +247,14 @@ open class DatabaseManager(context: Context) :
         readableDatabase.use { db ->
             db.rawQuery("$query;", null).use { cursor ->
                 return readFromCursor(cursor, select.size)
+            }
+        }
+    }
+
+    fun performQuery(query: String): ArrayList<String>{
+        readableDatabase.use { db ->
+            db.rawQuery("$query;", null).use { cursor ->
+                return readFromCursor(cursor, 1)
             }
         }
     }

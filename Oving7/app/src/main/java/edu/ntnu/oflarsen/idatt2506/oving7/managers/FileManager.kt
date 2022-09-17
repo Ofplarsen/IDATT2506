@@ -19,8 +19,8 @@ class FileManager(private val activity: AppCompatActivity) {
     private var externalFile = File(externalDir, filename)
 
 
-    private fun write(str: String) {
-        PrintWriter(file).use { writer ->
+    private fun write(str: String, filename: String) {
+        PrintWriter(File(dir, filename)).use { writer ->
             writer.println(str)
         }
     }
@@ -31,12 +31,13 @@ class FileManager(private val activity: AppCompatActivity) {
         }
     }
 
-    fun writeMovies(movies: List<Movie>){
+    fun writeMovies(filename: String,movies: ArrayList<Movie>){
         val serialized = mapper.writeValueAsString(movies)
-        write(serialized)
+        write(serialized, filename)
     }
 
-    fun readMovies(): List<Movie> {
+
+    fun readMovies(): ArrayList<Movie> {
         val json = readFileFromResFolder(R.raw.movies)
 
         return mapper.readValue(json)

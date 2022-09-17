@@ -24,20 +24,40 @@ class Database (context: Context) : DatabaseManager(context) {
     val allDirectors : ArrayList<String>
         get() {
             val select = arrayOf("$TABLE_PERSON.$PERSON_FIRSTNAME", "$TABLE_PERSON.$PERSON_LASTNAME")
-            val from = arrayOf(TABLE_PERSON, TABLE_MOVIE, TABLE_MOVIE_ACTOR)
+            val from = arrayOf(TABLE_PERSON, TABLE_MOVIE)
             val join = JOIN_MOVIE_PERSON
-            val where = "$TABLE_MOVIE.$MOVIE_DIRECTOR NOT IN (SELECT $TABLE_MOVIE_ACTOR.$PERSON_ID FROM $TABLE_MOVIE_ACTOR) DISTINCT"
-            return performRawQuery(select ,from ,join,where)
+            return performRawQuery(select ,from ,join)
         }
 
     val allActors: ArrayList<String>
         get() {
+            val query =
+                "SELECT ($TABLE_PERSON.$PERSON_FIRSTNAME || ' ' || $TABLE_PERSON.$PERSON_LASTNAME) " +
+                        "FROM $TABLE_PERSON, $TABLE_MOVIE, $TABLE_MOVIE_ACTOR " +
+                        "$JOIN_MOVIE_ACTOR " +
+                        "DISTINCT"
+
             val select = arrayOf("$TABLE_PERSON.$PERSON_FIRSTNAME", "$TABLE_PERSON.$PERSON_LASTNAME")
             val from = arrayOf(TABLE_PERSON, TABLE_MOVIE, TABLE_MOVIE_ACTOR)
             val join = JOIN_MOVIE_ACTOR
-            val where = "DISTINCT"
-            return performRawQuery(select ,from ,join,where)
+            return performRawQuery(select ,from ,join)
         }
+
+    fun getMoviesByDirector(lastname: String): ArrayList<String>{
+        val select = arrayOf("$TABLE_MOVIE.$MOVIE_TITLE")
+        val from = arrayOf(TABLE_MOVIE, TABLE_PERSON)
+        val join = JOIN_MOVIE_PERSON
+        val where = "$TABLE_PERSON.$PERSON_LASTNAME='$lastname'"
+        return performRawQuery(select ,from ,join,where)
+    }
+
+    fun getActorsInMovie(title: String): ArrayList<String>{
+        val select = arrayOf("$TABLE_PERSON.$PERSON_FIRSTNAME", "$TABLE_PERSON.$PERSON_LASTNAME")
+        val from = arrayOf(TABLE_MOVIE, TABLE_PERSON, TABLE_MOVIE_ACTOR)
+        val join = JOIN_MOVIE_ACTOR
+        val where = "$TABLE_MOVIE.$MOVIE_TITLE='$title'"
+        return performRawQuery(select ,from ,join,where)
+    }
 
     /*
     fun getAuthorsByBook(title: String): ArrayList<String> {
