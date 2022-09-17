@@ -9,47 +9,44 @@ class Database (context: Context) : DatabaseManager(context) {
     init {
         try {
             this.clear()
-            this.insert("Jane Austen", "Pride and Prejudice")
-            this.insert("Harper Lee", "To Kill a Mockingbird")
-            this.insert("Charles Dickens", "A Tale of Two Cities")
-            this.insert("F. Scott Fitzgerald", "The Great Gatsby")
-            this.insert("Carl Bernstein", "All The Presidents Men")
-            this.insert("Gabriel García Márquez", "One Hundred Years of Solitude")
-            this.insert("Charles Dickens", "Great Expectations")
-            this.insert("Bob Woodward", "All The Presidents Men")
-            this.insert("Charles Dickens", "Oliver Twist")
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
+
+    fun init(movies: ArrayList<Movie>){
+        movies.forEach { this.insertMovie(it) }
+    }
+
     val allMovies: ArrayList<String>
         get() = performQuery(TABLE_MOVIE, arrayOf(MOVIE_TITLE))
 
-
-    val allBooksAndAuthors: ArrayList<String>
+    val allDirectors : ArrayList<String>
         get() {
-            val select = arrayOf("$TABLE_BOOK.$BOOK_TITLE", "$TABLE_AUTHOR.$AUTHOR_NAME")
-            val from = arrayOf(TABLE_AUTHOR, TABLE_BOOK, TABLE_AUTHOR_BOOK)
-            val join = JOIN_AUTHOR_BOOK
-
-            return performRawQuery(select, from, join)
+            val select = arrayOf("$TABLE_PERSON.$PERSON_FIRSTNAME", "$TABLE_PERSON.$PERSON_LASTNAME")
+            val from = arrayOf(TABLE_PERSON, TABLE_MOVIE, TABLE_MOVIE_ACTOR)
+            val join = JOIN_MOVIE_PERSON
+            val where = "$TABLE_MOVIE.$MOVIE_DIRECTOR NOT IN (SELECT $TABLE_MOVIE_ACTOR.$PERSON_ID FROM $TABLE_MOVIE_ACTOR) DISTINCT"
+            return performRawQuery(select ,from ,join,where)
         }
 
-    fun getBooksByAuthor(author: String): ArrayList<String> {
-        val select = arrayOf("$TABLE_BOOK.$BOOK_TITLE")
-        val from = arrayOf(TABLE_AUTHOR, TABLE_BOOK, TABLE_AUTHOR_BOOK)
-        val join = JOIN_AUTHOR_BOOK
-        val where = "$TABLE_AUTHOR.$AUTHOR_NAME='$author'"
+    val allActors: ArrayList<String>
+        get() {
+            val select = arrayOf("$TABLE_PERSON.$PERSON_FIRSTNAME", "$TABLE_PERSON.$PERSON_LASTNAME")
+            val from = arrayOf(TABLE_PERSON, TABLE_MOVIE, TABLE_MOVIE_ACTOR)
+            val join = JOIN_MOVIE_ACTOR
+            val where = "DISTINCT"
+            return performRawQuery(select ,from ,join,where)
+        }
 
-        return performRawQuery(select, from, join, where)
-    }
-
+    /*
     fun getAuthorsByBook(title: String): ArrayList<String> {
+        /*
         val select = arrayOf("$TABLE_AUTHOR.$AUTHOR_NAME")
         val from = arrayOf(TABLE_AUTHOR, TABLE_BOOK, TABLE_AUTHOR_BOOK)
         val join = JOIN_AUTHOR_BOOK
         val where = "$TABLE_BOOK.$BOOK_TITLE='$title'"
-
+        */
         /*
         You can also just write out the querys manually like below, but this increases the chance of
         spelling mistakes and, creates a lot of work if you want to change names of fields etc.
@@ -60,4 +57,6 @@ class Database (context: Context) : DatabaseManager(context) {
 
         return performRawQuery(select, from, join, where)
     }
+
+     */
 }

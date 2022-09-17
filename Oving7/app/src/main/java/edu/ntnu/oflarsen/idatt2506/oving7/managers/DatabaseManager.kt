@@ -5,6 +5,8 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import edu.ntnu.oflarsen.idatt2506.oving7.models.Movie
+import edu.ntnu.oflarsen.idatt2506.oving7.models.Person
 
 open class DatabaseManager(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -33,6 +35,12 @@ open class DatabaseManager(context: Context) :
             "$TABLE_MOVIE.$ID=$TABLE_MOVIE_ACTOR.$MOVIE_ID",
             "$TABLE_PERSON.$ID=$TABLE_MOVIE_ACTOR.$PERSON_ID"
         )
+
+        val JOIN_MOVIE_PERSON = arrayOf(
+            "$TABLE_MOVIE.$ID=$TABLE_PERSON.$ID"
+        )
+
+
     }
 
     /**
@@ -83,17 +91,79 @@ open class DatabaseManager(context: Context) :
     }
 
 
-    /**
-     *  Inserts the author, the book, and then the connection between them.
-     */
-    fun insert(author: String, book: String) {
+    fun insertMovie(movie: Movie){
         writableDatabase.use { database ->
-            /*
-            val authorId = insertValueIfNotExists(database, TABLE_AUTHOR, AUTHOR_NAME, author)
-            val bookId = insertValueIfNotExists(database, TABLE_BOOK, BOOK_TITLE, book)
-            linkAuthorAndBook(database, authorId, bookId)
+            val directorId = insertPerson(movie.director)
+            movie.director.id = directorId
 
-             */
+            val actorIds = arrayListOf<Long>()
+            movie.actors.forEach { actorIds.add(insertPerson(it)) }
+
+            val movieId = insertMovie(database,movie)
+
+            linkMovieAndActors(database, actorIds, movieId)
+        }
+    }
+
+    private fun insertMovie(database: SQLiteDatabase, movie : Movie): Long {
+
+        val values = ContentValues()
+        values.put(MOVIE_TITLE, movie.title)
+        values.put(MOVIE_DIRECTOR, movie.director.id)
+
+
+        query(database, TABLE_MOVIE, arrayOf(ID, MOVIE_TITLE), "$MOVIE_TITLE='${movie.title}'").use { cursor ->
+            // insert if value doesn't exist
+            return if (cursor.count != 0) {
+                cursor.moveToFirst()
+                cursor.getLong(0) //id of found value
+            } else {
+                database.insert(TABLE_MOVIE, null, values)
+            }
+        }
+    }
+
+    private fun linkMovieAndActors(database: SQLiteDatabase, actorId: ArrayList<Long>, movieId: Long){
+        actorId.forEach { linkMovieAndActor(database, movieId, it) }
+    }
+
+    /**
+     *  Insert in the *TABLE_AUTHOR_BOOK*, essentially linking an author and a book
+     */
+    private fun linkMovieAndActor(database: SQLiteDatabase, movieId: Long, actorId: Long) {
+
+        val values = ContentValues()
+        values.put(MOVIE_ID, movieId)
+        values.put(PERSON_ID, actorId)
+        database.insert(TABLE_MOVIE_ACTOR, null, values)
+
+    }
+
+    private fun insertPerson(person: Person): Long{
+        writableDatabase.use { database ->
+
+            val personId = insertPerson(database, person.firstname, person.lastname)
+
+            return personId
+        }
+    }
+
+
+    private fun insertPerson(database: SQLiteDatabase, firstName: String, lastName: String): Long {
+
+        val values = ContentValues()
+        values.put(PERSON_FIRSTNAME, firstName)
+        values.put(PERSON_LASTNAME, lastName)
+
+
+        query(database, TABLE_PERSON, arrayOf(ID, PERSON_LASTNAME), "$PERSON_LASTNAME='$lastName'").use { cursor ->
+            // insert if value doesn't exist
+            return if (cursor.count != 0) {
+                cursor.moveToFirst()
+                cursor.getLong(0) //id of found value
+            } else {
+                database.insert(TABLE_PERSON, null, values)
+            }
         }
     }
 
@@ -135,18 +205,6 @@ open class DatabaseManager(context: Context) :
         return database.insert(table, null, values)
     }
 
-    /**
-     *  Insert in the *TABLE_AUTHOR_BOOK*, essentially linking an author and a book
-     */
-    private fun linkAuthorAndBook(database: SQLiteDatabase, authorId: Long, bookId: Long) {
-        /*
-        val values = ContentValues()
-        values.put(AUTHOR_ID, authorId)
-        values.put(BOOK_ID, bookId)
-        database.insert(TABLE_AUTHOR_BOOK, null, values)
-
-         */
-    }
 
     /**
      * Perform a simple query
