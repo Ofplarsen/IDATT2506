@@ -1,13 +1,12 @@
 <resources>
     <string name="app_name">Oving7</string>
-    <string name="info">Bruk menyen til å hente ut informasjon</string>
-    <string name="settings">Innstillinger</string>
+    <string name="info">Click Menu to start</string>
+    <string name="settings">Settings</string>
 
-    <string name="night_mode_title">Nattmodus</string>
-    <string name="night_mode">nightMode</string>
-    <string name="night_mode_default_value">MODE_NIGHT_FOLLOW_SYSTEM</string>
+    <string name="bg">Background</string>
+    <string name="bg_default_value">#FFFFFFFF</string>
 
-    <string name="back_button">Tilbake</string>
+    <string name="back_button">Return</string>
     <string name="choice_1">All movies</string>
     <string name="choice_2">All actors</string>
     <string name="choice_3">All directors</string>

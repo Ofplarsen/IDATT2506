@@ -1,27 +1,20 @@
 package edu.ntnu.oflarsen.idatt2506.oving7.managers
 
+import android.app.Activity
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import edu.ntnu.oflarsen.idatt2506.oving7.R
+import edu.ntnu.oflarsen.idatt2506.oving7.SettingsActivity
 
-class MyPreferenceManager(private val activity: AppCompatActivity) {
+class MyPreferenceManager(private val activity: Activity) {
 
 	private val resources = activity.resources
 	private val preferences = PreferenceManager.getDefaultSharedPreferences(activity)
 	private val editor: SharedPreferences.Editor = preferences.edit()
 
-	fun example() {
-		val preferences: SharedPreferences = activity.getSharedPreferences("prefs", 0)
-		val editor: SharedPreferences.Editor = preferences.edit()
-		editor.putString("playerName", "GameMaster3000")
-		editor.putBoolean("darkMode", true)
-		editor.apply()
-	}
 
-	fun putString(key: String, value: String) {
-		editor.putString(key, value)
+	fun putString(key: String, value: Int) {
+		editor.putString(key, value.toString())
 		editor.apply()
 	}
 
@@ -29,18 +22,19 @@ class MyPreferenceManager(private val activity: AppCompatActivity) {
 		return preferences.getString(key, defaultValue) ?: defaultValue
 	}
 
-	fun updateNightMode() {
-		val darkModeValues = resources.getStringArray(R.array.night_mode_values)
+	fun updateBackgroundColor() {
+		val darkModeValues = resources.getStringArray(R.array.bg_color_values)
 		val value = getString(
-				resources.getString(R.string.night_mode),
-				resources.getString(R.string.night_mode_default_value)
+			resources.getString(R.string.bg),
+			resources.getString(R.string.bg_default_value)
 		)
 		when (value) {
-			darkModeValues[0] -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-			darkModeValues[1] -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-			darkModeValues[2] -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-			darkModeValues[3] -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY)
+			darkModeValues[0] -> putString("bg", R.color.bg_1)
+			darkModeValues[1] -> putString("bg", R.color.bg_2)
+			darkModeValues[2] -> putString("bg", R.color.bg_3)
 		}
+
+		activity.window.decorView.setBackgroundColor(resources.getColor(getString("bg", "#FFFFFFFF").toInt()))
 	}
 
 	fun registerListener(activity: SharedPreferences.OnSharedPreferenceChangeListener) {

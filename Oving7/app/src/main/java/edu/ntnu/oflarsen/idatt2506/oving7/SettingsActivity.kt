@@ -1,5 +1,6 @@
 package edu.ntnu.oflarsen.idatt2506.oving7
 
+import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -18,17 +19,19 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-
 		myPreferenceManager = MyPreferenceManager(this)
 		myPreferenceManager.registerListener(this)
 
 		ui = ActivitySettingsBinding.inflate(layoutInflater)
 		setContentView(ui.root)
+		window.decorView.setBackgroundColor(resources.getColor(myPreferenceManager.getString("bg", "#FFFFFFFF").toInt()))
+
+
 
 		supportFragmentManager
-				.beginTransaction()
-				.replace(R.id.settings_container, SettingsFragment())
-				.commit()
+			.beginTransaction()
+			.replace(R.id.settings_container, SettingsFragment())
+			.commit()
 
 		ui.button.setOnClickListener {
 			finish()
@@ -36,12 +39,12 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 	}
 
 	override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-		if (key == getString(R.string.night_mode)) myPreferenceManager.updateNightMode()
+		if (key == getString(R.string.bg)) myPreferenceManager.updateBackgroundColor()
 	}
 
 	override fun provideSummary(preference: ListPreference): CharSequence? {
 		return when (preference?.key) {
-			getString(R.string.night_mode) -> preference.entry
+			getString(R.string.bg) -> preference.entry
 			else                           -> "Unknown Preference"
 		}
 	}

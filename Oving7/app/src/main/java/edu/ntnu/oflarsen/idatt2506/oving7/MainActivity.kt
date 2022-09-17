@@ -1,12 +1,15 @@
 package edu.ntnu.oflarsen.idatt2506.oving7
 
+import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import edu.ntnu.oflarsen.idatt2506.oving7.databinding.MyLayoutBinding
 import edu.ntnu.oflarsen.idatt2506.oving7.managers.FileManager
+import edu.ntnu.oflarsen.idatt2506.oving7.managers.MyPreferenceManager
 import edu.ntnu.oflarsen.idatt2506.oving7.models.Movie
 import edu.ntnu.oflarsen.idatt2506.oving7.models.Person
 import edu.ntnu.oflarsen.idatt2506.oving7.service.Database
@@ -20,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         layout = MyLayoutBinding.inflate(layoutInflater)
         setContentView(layout.root)
 
+        MyPreferenceManager(this).updateBackgroundColor()
         db = Database(this)
         initMovies()
     }
@@ -44,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.settings -> startActivity(Intent("oflarsen.idatt2506.SettingsActivity"))
+            R.id.settings -> startActivityForResult(Intent("oflarsen.idatt2506.SettingsActivity"), 0)
             1             -> showResults(db.allMovies, R.string.choice_1)
             2             -> showResults(db.allActors,  R.string.choice_2)
             3             -> showResults(db.allDirectors,  R.string.choice_3)
@@ -55,6 +59,10 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        MyPreferenceManager(this).updateBackgroundColor()
+    }
 
     private fun initMovies(){
         val movies = FileManager(this).readMovies()

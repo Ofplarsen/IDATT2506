@@ -1,13 +1,13 @@
 package edu.ntnu.oflarsen.idatt2506.oving7.managers
 
-import androidx.appcompat.app.AppCompatActivity
 import edu.ntnu.oflarsen.idatt2506.oving7.models.Movie
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import edu.ntnu.oflarsen.idatt2506.oving7.MainActivity
 import edu.ntnu.oflarsen.idatt2506.oving7.R
 import java.io.*
 
-class FileManager(private val activity: AppCompatActivity) {
+class FileManager(private val activity: MainActivity) {
 
     private val filename: String = "movies.txt"
     private val mapper = jacksonObjectMapper()
