@@ -1,13 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
 
+part 'task.g.dart';
 
 
 @JsonSerializable()
 class Task{
-  String _taskName;
-  bool _done;
+  String taskName;
+  bool done;
 
-  Task(this._taskName, this._done);
+  Task(this.taskName, this.done);
 
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
 

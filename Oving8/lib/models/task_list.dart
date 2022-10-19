@@ -1,17 +1,15 @@
-import 'package:oving8/models/Task.dart';
+import 'package:oving8/models/task.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+part 'task_list.g.dart';
 
 @JsonSerializable()
 class TaskList{
-  String _name;
-  List<Task> _tasks;
+  String name;
+  List<Task> tasks;
 
-  TaskList(this._name, this._tasks);
+  TaskList(this.name, this.tasks);
 
-  List<Task> get tasks => _tasks;
-
-  String get name => _name;
 
   factory TaskList.fromJson(Map<String, dynamic> json) => _$TaskListFromJson(json);
 

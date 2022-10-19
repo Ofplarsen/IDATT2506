@@ -4,8 +4,8 @@ import 'about.dart';
 import 'package:flutter/material.dart';
 
 import 'managers/FileManager.dart';
-import 'models/Task.dart';
-import 'models/TaskList.dart';
+import 'models/task.dart';
+import 'models/task_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
     Task task2 = Task("Test2", false);
     Task task3 = Task("Test3", false);
     List<Task> tasks = [task1, task2, task3];
-    TaskList taskList = TaskList("Test List", tasks)
+    TaskList taskList = TaskList("Test List", tasks);
     super.initState();
   }
 
