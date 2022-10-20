@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:json_annotation/json_annotation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:oving8/models/task.dart';
 import 'package:oving8/models/task_list.dart';
+
 import 'package:path_provider/path_provider.dart';
 
 
@@ -24,7 +26,15 @@ class FileManager{
     final file = await _localFile;
 
     // Write the file
-    String json  = JsonEncoder(tasks) as String;
+    String json  = jsonEncode(tasks);
     return file.writeAsString(json);
+  }
+
+  Future<String> readTaskList() async {
+    final file = await _localFile;
+    String json = await file.readAsString();
+    Map<String, dynamic> userMap = jsonDecode(json);
+    var tasklist = TaskList.fromJson(userMap);
+    return tasklist.toString();
   }
 }

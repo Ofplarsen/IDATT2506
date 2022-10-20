@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:oving8/managers/FileManager.dart';
+import 'package:oving8/models/task.dart';
+import 'package:oving8/models/task_list.dart';
+
+
 import 'about.dart';
 import 'package:flutter/material.dart';
 
-import 'managers/FileManager.dart';
-import 'models/task.dart';
-import 'models/task_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,14 +23,26 @@ class _MyAppState extends State<MyApp> {
   int count = 0;
 
   @override
-  void initState() {
+  void initState(){
+    super.initState();
+
+
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      _asyncFunc();
+    });
+
+  }
+
+  _asyncFunc() async{
     FileManager fileManager = FileManager();
     Task task1 = Task("Test1", true);
     Task task2 = Task("Test2", false);
     Task task3 = Task("Test3", false);
     List<Task> tasks = [task1, task2, task3];
     TaskList taskList = TaskList("Test List", tasks);
-    super.initState();
+    await fileManager.writeTaskList(taskList);
+    String json = await fileManager.readTaskList();
+    print(json);
   }
 
   @override

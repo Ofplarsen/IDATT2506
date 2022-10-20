@@ -12,5 +12,10 @@ class Task{
 
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
 
-  Map<String, dynamic> toJson() => _$TaskFromJson(this);
+  Map<String, dynamic> toJson() => _$TaskToJson(this);
+
+  @override
+  String toString() {
+    return 'Task{taskName: $taskName, done: $done}';
+  }
 }
