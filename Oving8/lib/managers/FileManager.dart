@@ -22,6 +22,16 @@ class FileManager{
     return File('$path/$list_name.txt');
   }
 
+  Future<bool> deleteFile(String list_name) async {
+    final file = await _localFile(list_name);
+    try{
+      await file.delete();
+      return true;
+    }catch(e){
+      return false;
+    }
+  }
+
   Future<File> writeTaskList(TaskList tasks) async {
     final file = await _localFile(tasks.fileName);
 

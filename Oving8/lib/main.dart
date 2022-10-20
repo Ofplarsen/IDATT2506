@@ -3,14 +3,20 @@ import 'dart:ui';
 import 'package:oving8/managers/FileManager.dart';
 import 'package:oving8/models/task.dart';
 import 'package:oving8/models/task_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 import 'about.dart';
 import 'package:flutter/material.dart';
 
+import 'create_list.dart';
+
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MaterialApp(
+    title: "App",
+    home: MyApp(),
+  ));
 }
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -31,6 +37,12 @@ class _MyAppState extends State<MyApp> {
       _asyncFunc();
     });
 
+  }
+
+  Future<TaskList> _getLastList() async{
+    final prefs = await SharedPreferences.getInstance();
+    TaskList lastList = prefs.get('list') as TaskList ?? TaskList("New TaskList", []);
+    return lastList;
   }
 
   _asyncFunc() async{
@@ -57,6 +69,16 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           backgroundColor: Colors.green,
           title: const Text("Øving 8"),
+
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CreateList()),
+            );
+          },
         ),
       ),
     );
