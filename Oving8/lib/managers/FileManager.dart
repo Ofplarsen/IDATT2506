@@ -17,21 +17,21 @@ class FileManager{
     return dir.path;
   }
 
-  Future<File> get _localFile async {
+  Future<File> _localFile(String list_name) async {
     final path = await _localPath;
-    return File('$path/task_lists.txt');
+    return File('$path/$list_name.txt');
   }
 
   Future<File> writeTaskList(TaskList tasks) async {
-    final file = await _localFile;
+    final file = await _localFile(tasks.fileName);
 
     // Write the file
     String json  = jsonEncode(tasks);
     return file.writeAsString(json);
   }
 
-  Future<String> readTaskList() async {
-    final file = await _localFile;
+  Future<String> readTaskList(String list_name) async {
+    final file = await _localFile(list_name);
     String json = await file.readAsString();
     Map<String, dynamic> userMap = jsonDecode(json);
     var tasklist = TaskList.fromJson(userMap);

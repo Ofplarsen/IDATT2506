@@ -39,9 +39,9 @@ class _MyAppState extends State<MyApp> {
     Task task2 = Task("Test2", false);
     Task task3 = Task("Test3", false);
     List<Task> tasks = [task1, task2, task3];
-    TaskList taskList = TaskList("Test List", tasks);
+    TaskList taskList = TaskList("Test list", tasks);
     await fileManager.writeTaskList(taskList);
-    String json = await fileManager.readTaskList();
+    String json = await fileManager.readTaskList(taskList.fileName);
     print(json);
   }
 

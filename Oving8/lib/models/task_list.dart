@@ -14,6 +14,10 @@ class TaskList{
 
   Map<String, dynamic> toJson() => _$TaskListToJson(this);
 
+  String get fileName {
+    return this.name.replaceAll(" ","_").toLowerCase();
+  }
+
   @override
   String toString() {
     return 'TaskList{name: $name, tasks: $tasks}';
