@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:oving8/components/list_list.dart';
 import 'package:oving8/managers/FileManager.dart';
 import 'package:oving8/models/task.dart';
 import 'package:oving8/models/task_list.dart';
@@ -26,12 +27,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  int count = 0;
+  List<TaskList> tasksLists = [];
+  TaskList currentList = TaskList("New TaskList", []);
 
   @override
   void initState(){
     super.initState();
 
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      _getLastList();
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_){
       _asyncFunc();
@@ -42,6 +47,7 @@ class _MyAppState extends State<MyApp> {
   Future<TaskList> _getLastList() async{
     final prefs = await SharedPreferences.getInstance();
     TaskList lastList = prefs.get('list') as TaskList ?? TaskList("New TaskList", []);
+    currentList = lastList;
     return lastList;
   }
 
@@ -61,7 +67,6 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -69,16 +74,37 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           backgroundColor: Colors.green,
           title: const Text("Øving 8"),
-
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CreateList()),
-            );
-          },
+          onPressed: () => showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Add new List'),
+            content: const TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Name of new list',
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Save'),
+                child: const Text('Save'),
+              ),
+            ],
+            ),
+          ),
+        ),
+        body: const Center(
+            child: ListTaskList()
+        ),
+        drawer: const Drawer(
+            child: ListTaskList()
         ),
       ),
     );
