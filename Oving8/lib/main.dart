@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'about.dart';
 import 'package:flutter/material.dart';
 
+import 'components/list_tasks.dart';
 import 'create_list.dart';
 
 
@@ -101,10 +102,31 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         body: const Center(
-            child: ListTaskList()
+            child: ListTasks()
         ),
-        drawer: const Drawer(
-            child: ListTaskList()
+        drawer: Drawer(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: const [
+                SizedBox(
+                  height : 80,
+                  child  : DrawerHeader(
+                      decoration: BoxDecoration(color: Colors.green),
+                      margin : EdgeInsets.zero,
+                      padding: EdgeInsets.zero,
+                      child  : Center(
+                          child: Text('Lists',
+                              style: TextStyle(color: Colors.white, fontSize: 24)
+
+                          )
+                      )
+                  ),
+                ),
+                Flexible(
+                  child: ListTaskList(),
+                ),
+              ],
+            )
         ),
       ),
     );
