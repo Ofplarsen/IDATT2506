@@ -30,7 +30,16 @@ class _ListTasksState extends State<ListTasks> {
       return Colors.red;
     }
 
-
+    _refresh(){
+      setState(() {
+        widget.taskList.tasks.sort((a, b) {
+          if(a.done){
+            return 1;
+          }
+          return -1;
+        });
+      });
+    }
 
     return ListView.builder(
       // Let the ListView know how many items it needs to build.
@@ -39,7 +48,6 @@ class _ListTasksState extends State<ListTasks> {
       // Convert each item into a widget based on the type of item it is.
       itemBuilder: (context, index) {
         final item = widget.taskList.tasks[index];
-        final name = widget.taskList.tasks[index].taskName;
         return Card(
           child: InkWell(
             onTap: () {
@@ -49,7 +57,7 @@ class _ListTasksState extends State<ListTasks> {
             },
             child: ListTile(
               leading: Icon(Icons.task),
-              title: Text('$name'),
+              title: Text(item.taskName),
               trailing: Checkbox(
                 checkColor: Colors.white,
                 fillColor: MaterialStateProperty.resolveWith(getColor),
@@ -57,7 +65,9 @@ class _ListTasksState extends State<ListTasks> {
                 onChanged: (bool? value) {
                   setState(() {
                     item.done = !item.done;
+
                   });
+                  _refresh();
                 },
               ),
             ),

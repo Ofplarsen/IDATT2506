@@ -33,6 +33,9 @@ class _MyAppState extends State<MyApp> {
     TaskList("Todo", [Task("Train", true), Task("Walk", false), Task("Jog", false)]),
     TaskList("Shopping List", [Task("Milk", true), Task("Coco", false), Task("Pizza", false)])];
 
+  var focusNode = FocusNode();
+  final _textController = TextEditingController();
+
   @override
   void initState(){
     super.initState();
@@ -47,9 +50,30 @@ class _MyAppState extends State<MyApp> {
 
   }
 
+  _addList(TaskList list){
+    if(taskLists.any((element) => element.name == list.name)){
+      return;
+    }
+    setState(() {
+      taskLists.add(list);
+    });
+  }
+
   refresh(TaskList list) {
     setState(() {
       currentList = list;
+      _refresh();
+    });
+  }
+
+  _refresh(){
+    setState(() {
+      currentList.tasks.sort((a, b) {
+        if(a.done){
+          return 1;
+        }
+        return -1;
+      });
     });
   }
 
@@ -71,6 +95,14 @@ class _MyAppState extends State<MyApp> {
     print(json);
   }
 
+  String _newListName = "";
+
+  addTask(String name){
+    setState(() {
+      currentList.tasks.add(Task(name, false));
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -89,11 +121,14 @@ class _MyAppState extends State<MyApp> {
           context: context,
           builder: (BuildContext context) => AlertDialog(
             title: const Text('Add new List'),
-            content: const TextField(
-              decoration: InputDecoration(
+            content: TextField(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Name of new list',
               ),
+              onChanged: (value){
+                _newListName = value;
+              },
             ),
             actions: <Widget>[
               TextButton(
@@ -101,7 +136,10 @@ class _MyAppState extends State<MyApp> {
                 child: const Text('Cancel'),
               ),
               TextButton(
-                onPressed: () => Navigator.pop(context, 'Save'),
+                onPressed: () {
+                  _addList(TaskList(_newListName,[]));
+                  Navigator.pop(context, 'Save');
+                },
                 child: const Text('Save'),
               ),
             ],
@@ -109,7 +147,35 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         body: Center(
-            child: ListTasks(taskList: currentList,notifyParent: refresh)
+            child: Column(
+
+              children: [
+                Card(
+                  child: ListTile(
+                    title: Text('${currentList.name}', style: TextStyle(fontSize: 24),),
+                  ),
+                ),
+                TextField(
+                  controller: _textController,
+                  focusNode: focusNode,
+                  onSubmitted: (value) {
+                    addTask(value);
+                    _refresh();
+                    _textController.clear();
+                    focusNode.requestFocus();
+                  },
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    hintText: 'New Task',
+                    suffixIcon: IconButton(
+                      onPressed: _textController.clear,
+                      icon: const Icon(Icons.clear),
+                    ),
+                  ),
+                ),
+                Expanded(child: ListTasks(taskList: currentList, notifyParent: refresh)),
+              ],
+            )
         ),
         drawer: Drawer(
             child: Column(

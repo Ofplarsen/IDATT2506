@@ -30,7 +30,6 @@ class _ListTaskListState extends State<ListTaskList> {
       // Convert each item into a widget based on the type of item it is.
       itemBuilder: (context, index) {
         final item = widget.taskList[index];
-        final itemName = widget.taskList[index].name;
         return Card(
             child: InkWell(
               onTap: () {
@@ -38,19 +37,18 @@ class _ListTaskListState extends State<ListTaskList> {
                   widget.currentList = item;
                 });
                 widget.notifyParent(item);
-                print(widget.currentList);
                 Navigator.pop(context, widget.currentList);
               },
               child: ListTile(
                 leading: Icon(Icons.list),
-                title: Text('$itemName'),
+                title: Text(item.name),
                 trailing: IconButton(
                   icon: const Icon(Icons.delete),
                    onPressed: () => showDialog<String>(
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
                       title: Text('Warning!'),
-                      content: Text('Are you sure you want to delete: \n$itemName'),
+                      content: Text('Are you sure you want to delete: \n${item.name}'),
                       actions: <Widget>[
                         TextButton(
                           onPressed: (){
@@ -60,9 +58,13 @@ class _ListTaskListState extends State<ListTaskList> {
                         ),
                         TextButton(
                           onPressed: (){
+                            if(widget.currentList == widget.taskList[index]) {
+                              widget.notifyParent(TaskList("", []));
+                            }
                             setState(() {
                               widget.taskList.removeAt(index);
                             });
+
                             Navigator.pop(context);
                           },
                           child: const Text('Delete'),
