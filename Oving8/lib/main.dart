@@ -28,13 +28,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<TaskList> tasksLists = [];
   TaskList currentList = TaskList("New TaskList", []);
+  List<TaskList> taskLists = [TaskList("Remember", [Task("Do school", true), Task("Never give up", false), Task("Laugh", false)]),
+    TaskList("Todo", [Task("Train", true), Task("Walk", false), Task("Jog", false)]),
+    TaskList("Shopping List", [Task("Milk", true), Task("Coco", false), Task("Pizza", false)])];
 
   @override
   void initState(){
     super.initState();
-
+    currentList = taskLists[0];
     WidgetsBinding.instance.addPostFrameCallback((_){
       _getLastList();
     });
@@ -45,10 +47,15 @@ class _MyAppState extends State<MyApp> {
 
   }
 
+  refresh(TaskList list) {
+    setState(() {
+      currentList = list;
+    });
+  }
+
   Future<TaskList> _getLastList() async{
     final prefs = await SharedPreferences.getInstance();
     TaskList lastList = prefs.get('list') as TaskList ?? TaskList("New TaskList", []);
-    currentList = lastList;
     return lastList;
   }
 
@@ -101,14 +108,14 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
         ),
-        body: const Center(
-            child: ListTasks()
+        body: Center(
+            child: ListTasks(taskList: currentList,notifyParent: refresh)
         ),
         drawer: Drawer(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: const [
-                SizedBox(
+              children: [
+                const SizedBox(
                   height : 80,
                   child  : DrawerHeader(
                       decoration: BoxDecoration(color: Colors.green),
@@ -117,13 +124,12 @@ class _MyAppState extends State<MyApp> {
                       child  : Center(
                           child: Text('Lists',
                               style: TextStyle(color: Colors.white, fontSize: 24)
-
                           )
                       )
                   ),
                 ),
                 Flexible(
-                  child: ListTaskList(),
+                  child: ListTaskList(taskList: taskLists, currentList: currentList, notifyParent: refresh),
                 ),
               ],
             )

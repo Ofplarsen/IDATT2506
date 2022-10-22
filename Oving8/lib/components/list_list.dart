@@ -7,7 +7,11 @@ import 'package:oving8/models/task_list.dart';
 
 class ListTaskList extends StatefulWidget {
 
-  const ListTaskList({Key? key}) : super(key: key);
+  ListTaskList({Key? key, required this.taskList, required this.currentList, required this.notifyParent}) : super(key: key);
+  final Function(TaskList) notifyParent;
+
+  final List<TaskList> taskList;
+  TaskList currentList;
 
   @override
   State<ListTaskList> createState() => _ListTaskListState();
@@ -15,29 +19,58 @@ class ListTaskList extends StatefulWidget {
 
 class _ListTaskListState extends State<ListTaskList> {
 
-  List<TaskList> taskList = [TaskList("New TaskList", [Task("Test1", true), Task("Test2", false), Task("Test3", false)]),
-    TaskList("Todo", [Task("Test1", true), Task("Test2", false), Task("Test3", false)]),
-    TaskList("Shopping List", [Task("Test1", true), Task("Test2", false), Task("Test3", false)])];
+
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       // Let the ListView know how many items it needs to build.
-      itemCount: taskList.length,
+      itemCount: widget.taskList.length,
       // Provide a builder function. This is where the magic happens.
       // Convert each item into a widget based on the type of item it is.
       itemBuilder: (context, index) {
-        final item = taskList[index].name;
-
+        final item = widget.taskList[index];
+        final itemName = widget.taskList[index].name;
         return Card(
             child: InkWell(
               onTap: () {
-                print("tapped");
-                Navigator.pop(context);
+                setState(() {
+                  widget.currentList = item;
+                });
+                widget.notifyParent(item);
+                print(widget.currentList);
+                Navigator.pop(context, widget.currentList);
               },
               child: ListTile(
                 leading: Icon(Icons.list),
-                title: Text('$item'),
+                title: Text('$itemName'),
+                trailing: IconButton(
+                  icon: const Icon(Icons.delete),
+                   onPressed: () => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: Text('Warning!'),
+                      content: Text('Are you sure you want to delete: \n$itemName'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: (){
+                            Navigator.pop(context);
+                           },
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: (){
+                            setState(() {
+                              widget.taskList.removeAt(index);
+                            });
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Delete'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
         );
