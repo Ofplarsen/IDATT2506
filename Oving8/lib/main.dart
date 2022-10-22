@@ -85,6 +85,7 @@ class _MyAppState extends State<MyApp> {
 
   _asyncFunc() async{
     FileManager fileManager = FileManager();
+    await fileManager.getTaskLists();
     Task task1 = Task("Test1", true);
     Task task2 = Task("Test2", false);
     Task task3 = Task("Test3", false);

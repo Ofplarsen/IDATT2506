@@ -32,6 +32,16 @@ class FileManager{
     }
   }
 
+  Future <List<TaskList>?> getTaskLists() async{
+    var dir = Directory(await _localPath);
+
+    await for (var entity in
+    dir.list(recursive: true, followLinks: false)) {
+      print(entity.path);
+    }
+    return null;
+  }
+
   Future<File> writeTaskList(TaskList tasks) async {
     final file = await _localFile(tasks.fileName);
 
