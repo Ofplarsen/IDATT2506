@@ -6,7 +6,7 @@ import 'package:oving8/models/task_list.dart';
 class ListTasks extends StatefulWidget {
   const ListTasks({Key? key, required this.taskList, required this.notifyParent}) : super(key: key);
 
-  final Function(TaskList) notifyParent;
+  final Function() notifyParent;
   final TaskList taskList;
 
   @override
@@ -54,6 +54,8 @@ class _ListTasksState extends State<ListTasks> {
               setState(() {
                 item.done = !item.done;
               });
+              _refresh();
+              widget.notifyParent();
             },
             child: ListTile(
               leading: Icon(Icons.task),
@@ -65,9 +67,9 @@ class _ListTasksState extends State<ListTasks> {
                 onChanged: (bool? value) {
                   setState(() {
                     item.done = !item.done;
-
                   });
                   _refresh();
+                  widget.notifyParent();
                 },
               ),
             ),

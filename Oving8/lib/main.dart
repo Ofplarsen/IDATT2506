@@ -1,3 +1,4 @@
+
 import 'dart:io';
 import 'dart:ui';
 import 'package:oving8/components/list_list.dart';
@@ -28,10 +29,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  TaskList currentList = TaskList("New TaskList", []);
+  TaskList currentList = TaskList("", []);
   List<TaskList> taskLists = [TaskList("Remember", [Task("Do school", true), Task("Never give up", false), Task("Laugh", false)]),
     TaskList("Todo", [Task("Train", true), Task("Walk", false), Task("Jog", false)]),
     TaskList("Shopping List", [Task("Milk", true), Task("Coco", false), Task("Pizza", false)])];
+
+  final FileManager _fileManager = FileManager();
 
   var focusNode = FocusNode();
   final _textController = TextEditingController();
@@ -39,15 +42,12 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState(){
     super.initState();
-    currentList = taskLists[0];
     WidgetsBinding.instance.addPostFrameCallback((_){
-      _getLastList();
+      _importLists();
     });
-
     WidgetsBinding.instance.addPostFrameCallback((_){
-      _asyncFunc();
+      _initLastList();
     });
-
   }
 
   _addList(TaskList list){
@@ -60,13 +60,16 @@ class _MyAppState extends State<MyApp> {
   }
 
   refresh(TaskList list) {
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      _setLastList(list);
+    });
     setState(() {
       currentList = list;
       _refresh();
     });
   }
 
-  _refresh(){
+  _refresh() {
     setState(() {
       currentList.tasks.sort((a, b) {
         if(a.done){
@@ -74,31 +77,41 @@ class _MyAppState extends State<MyApp> {
         }
         return -1;
       });
+      _save();
     });
+
   }
 
-  Future<TaskList> _getLastList() async{
+  _initLastList() async{
+
     final prefs = await SharedPreferences.getInstance();
-    TaskList lastList = prefs.get('list') as TaskList ?? TaskList("New TaskList", []);
-    return lastList;
+    try{
+      String filename = prefs.get('list') as String;
+      print('Importing last list $filename');
+      var list = await _fileManager.readTaskList(filename);
+      setState(() {
+        currentList = list;
+      });
+    }catch(e){
+      print(e);
+    }
+
   }
 
-  _asyncFunc() async{
-    FileManager fileManager = FileManager();
-    await fileManager.getTaskLists();
-    Task task1 = Task("Test1", true);
-    Task task2 = Task("Test2", false);
-    Task task3 = Task("Test3", false);
-    List<Task> tasks = [task1, task2, task3];
-    TaskList taskList = TaskList("Test list", tasks);
-    await fileManager.writeTaskList(taskList);
-    String json = await fileManager.readTaskList(taskList.fileName);
-    print(json);
+  _importLists() async{
+
+    for(var tl in taskLists){
+      await _fileManager.writeTaskList(tl);
+    }
+    var t =  await _fileManager.getTaskLists();
+    setState(() {
+      taskLists = t;
+    });
   }
 
   String _newListName = "";
 
-  addTask(String name){
+  _addTask(String name){
     setState(() {
       currentList.tasks.add(Task(name, false));
     });
@@ -108,6 +121,20 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     super.dispose();
   }
+
+  _save() async {
+    print("Saving");
+    for (var tl in taskLists){
+      await _fileManager.writeTaskList(tl);
+    }
+  }
+
+  _setLastList(TaskList list) async{
+    final prefs = await SharedPreferences.getInstance();
+    print('Setting last file as: ${list.fileName}');
+    await prefs.setString('list', list.fileName);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -139,6 +166,7 @@ class _MyAppState extends State<MyApp> {
               TextButton(
                 onPressed: () {
                   _addList(TaskList(_newListName,[]));
+                  _refresh();
                   Navigator.pop(context, 'Save');
                 },
                 child: const Text('Save'),
@@ -160,7 +188,7 @@ class _MyAppState extends State<MyApp> {
                   controller: _textController,
                   focusNode: focusNode,
                   onSubmitted: (value) {
-                    addTask(value);
+                    _addTask(value);
                     _refresh();
                     _textController.clear();
                     focusNode.requestFocus();
@@ -174,7 +202,7 @@ class _MyAppState extends State<MyApp> {
                     ),
                   ),
                 ),
-                Expanded(child: ListTasks(taskList: currentList, notifyParent: refresh)),
+                Expanded(child: ListTasks(taskList: currentList, notifyParent: _refresh)),
               ],
             )
         ),

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:oving8/models/task.dart';
 import 'package:oving8/models/task_list.dart';
 
+import '../managers/FileManager.dart';
+
 class ListTaskList extends StatefulWidget {
 
   ListTaskList({Key? key, required this.taskList, required this.currentList, required this.notifyParent}) : super(key: key);
@@ -57,14 +59,16 @@ class _ListTaskListState extends State<ListTaskList> {
                           child: const Text('Cancel'),
                         ),
                         TextButton(
-                          onPressed: (){
+                          onPressed: () async {
                             if(widget.currentList == widget.taskList[index]) {
                               widget.notifyParent(TaskList("", []));
                             }
+                            FileManager fileManager = FileManager();
+                            await fileManager.deleteFile(widget.taskList[index].fileName);
                             setState(() {
                               widget.taskList.removeAt(index);
                             });
-
+                            widget.notifyParent(widget.currentList);
                             Navigator.pop(context);
                           },
                           child: const Text('Delete'),

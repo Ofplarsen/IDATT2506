@@ -25,21 +25,31 @@ class FileManager{
   Future<bool> deleteFile(String list_name) async {
     final file = await _localFile(list_name);
     try{
-      await file.delete();
+      var f = await file.delete();
+      print("deleting: $f");
       return true;
     }catch(e){
+      print(e);
       return false;
     }
   }
 
-  Future <List<TaskList>?> getTaskLists() async{
+  Future <List<TaskList>> getTaskLists() async{
+    List<TaskList> tasklists = [];
     var dir = Directory(await _localPath);
 
     await for (var entity in
     dir.list(recursive: true, followLinks: false)) {
-      print(entity.path);
+      if(entity.path.contains('.txt')) {
+        print(entity.path);
+        File f = File(entity.path);
+        String json = await f.readAsString();
+        Map<String, dynamic> userMap = jsonDecode(json);
+        tasklists.add(TaskList.fromJson(userMap));
+      }
+
     }
-    return null;
+    return tasklists;
   }
 
   Future<File> writeTaskList(TaskList tasks) async {
@@ -50,11 +60,11 @@ class FileManager{
     return file.writeAsString(json);
   }
 
-  Future<String> readTaskList(String list_name) async {
+  Future<TaskList> readTaskList(String list_name) async {
     final file = await _localFile(list_name);
     String json = await file.readAsString();
     Map<String, dynamic> userMap = jsonDecode(json);
     var tasklist = TaskList.fromJson(userMap);
-    return tasklist.toString();
+    return tasklist;
   }
 }
