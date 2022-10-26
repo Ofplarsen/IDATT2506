@@ -60,7 +60,8 @@ class _ListTaskListState extends State<ListTaskList> {
                         ),
                         TextButton(
                           onPressed: () async {
-                            if(widget.currentList == widget.taskList[index]) {
+                            if(widget.currentList == widget.taskList[index]
+                                || widget.taskList.length == 1) {
                               widget.notifyParent(TaskList("", []));
                             }
                             FileManager fileManager = FileManager();

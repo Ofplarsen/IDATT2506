@@ -30,9 +30,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   TaskList currentList = TaskList("", []);
-  List<TaskList> taskLists = [TaskList("Remember", [Task("Do school", true), Task("Never give up", false), Task("Laugh", false)]),
-    TaskList("Todo", [Task("Train", true), Task("Walk", false), Task("Jog", false)]),
-    TaskList("Shopping List", [Task("Milk", true), Task("Coco", false), Task("Pizza", false)])];
+  List<TaskList> taskLists = [];
 
   final FileManager _fileManager = FileManager();
 
@@ -51,11 +49,15 @@ class _MyAppState extends State<MyApp> {
   }
 
   _addList(TaskList list){
-    if(taskLists.any((element) => element.name == list.name)){
+    if(list.name.isEmpty){
+      return;
+    }
+    if(taskLists.any((element) => element.fileName.trim() == list.fileName.trim())){
       return;
     }
     setState(() {
       taskLists.add(list);
+      currentList = list;
     });
   }
 
@@ -99,19 +101,24 @@ class _MyAppState extends State<MyApp> {
   }
 
   _importLists() async{
-
-    for(var tl in taskLists){
-      await _fileManager.writeTaskList(tl);
-    }
     var t =  await _fileManager.getTaskLists();
     setState(() {
-      taskLists = t;
+      if (t.isEmpty){
+        taskLists = [TaskList("Remember", [Task("Do school", true), Task("Never give up", false), Task("Laugh", false)]),
+      TaskList("Todo", [Task("Train", true), Task("Walk", false), Task("Jog", false)]),
+      TaskList("Shopping List", [Task("Milk", true), Task("Coco", false), Task("Pizza", false)])];
+      }else{
+        taskLists = t;
+      }
     });
   }
 
   String _newListName = "";
 
   _addTask(String name){
+    if(name.isEmpty){
+      return;
+    }
     setState(() {
       currentList.tasks.add(Task(name, false));
     });
@@ -187,6 +194,7 @@ class _MyAppState extends State<MyApp> {
                 TextField(
                   controller: _textController,
                   focusNode: focusNode,
+                  enabled: currentList.name.isNotEmpty,
                   onSubmitted: (value) {
                     _addTask(value);
                     _refresh();
@@ -232,51 +240,4 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-/*
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.green,
-          title: const Text("Flutter WOOO"),
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => AboutPage(),
-              ),
-            );
-          },
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home'
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.business),
-                label: 'Business'
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.school),
-                label: 'School'
-            )
-          ],
-        ),
-        drawer: Drawer(
-          child: Text("Yo")
-        ),
-        body: Center(
-          child: Text('$count')
-          ),
-      ),
-    );
-  }
-
- */
 }
