@@ -7,8 +7,6 @@ import 'package:oving8/models/task.dart';
 import 'package:oving8/models/task_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-import 'about.dart';
 import 'package:flutter/material.dart';
 
 import 'components/list_tasks.dart';
