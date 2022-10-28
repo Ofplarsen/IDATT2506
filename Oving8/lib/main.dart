@@ -129,8 +129,16 @@ class _MyAppState extends State<MyApp> {
 
   _save() async {
     print("Saving");
-    for (var tl in taskLists){
-      await _fileManager.writeTaskList(tl);
+    if(taskLists.isEmpty){
+      print("Returning");
+      return;
+    }
+    try{
+      for (var tl in taskLists){
+        await _fileManager.writeTaskList(tl);
+      }
+    }catch(e){
+      e.toString();
     }
   }
 

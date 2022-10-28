@@ -69,7 +69,7 @@ class _ListTaskListState extends State<ListTaskList> {
                             setState(() {
                               widget.taskList.removeAt(index);
                             });
-                            widget.notifyParent(widget.currentList);
+                            await widget.notifyParent(widget.currentList);
                             Navigator.pop(context);
                           },
                           child: const Text('Delete'),
